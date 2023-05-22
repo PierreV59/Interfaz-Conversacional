@@ -81,6 +81,7 @@ module.exports = function(io) {
     console.log('Un usuario se ha conectado');
   
     socket.on('Send message', function(data) {
+      io.emit('new message', { message: data });
       const https = require('https');
       const options = {
         hostname: '25a0-200-24-154-53.ngrok.io/',
@@ -99,7 +100,7 @@ module.exports = function(io) {
           try {
             const response = JSON.parse(responseBody);
             const responseData = response[0].text;
-            io.emit('new message', { message: data, response: responseData });
+            io.emit('new message', { message: responseData });
             const cleanMsg = responseData.replace(/\p{Emoji}/gu, '');
             console.log('Mensaje insertado correctamente!');
           } catch (error) {

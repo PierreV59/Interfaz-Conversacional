@@ -34,6 +34,7 @@ class ChatComponent extends HTMLElement {
     scrollDownButton.addEventListener('click', () => {
       chatContainer.scrollTop = chatContainer.scrollHeight;
     });
+
     // Listen for new messages and add them to the chat
     socket.on('new message', function(data) {
       const now = new Date();
@@ -64,14 +65,17 @@ class ChatComponent extends HTMLElement {
 
       messageContainer.appendChild(userMessage);
       messageContainer.appendChild(userMessageTime);
-      messageContainer.appendChild(botMessage);
-      messageContainer.appendChild(botMessageTime);
+
+      if (data.response) {
+        messageContainer.appendChild(botMessage);
+        messageContainer.appendChild(botMessageTime);
+      }
 
       chatContainer.appendChild(messageContainer);
       chatContainer.scrollTop = chatContainer.scrollHeight;
     });
-
   }
 }
 
 customElements.define('chat-component', ChatComponent);
+

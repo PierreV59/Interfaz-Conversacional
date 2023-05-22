@@ -136,14 +136,10 @@
       
     }
     connectedCallback() {
-      this.messageInput.addEventListener('keypress', this.messageBoxKeyPress);
+      this.messageInput = document.querySelector('#message');
+      this.messageInput.addEventListener('keypress', this.messageBoxKeyPress.bind(this));
     }
-  
-    disconnectedCallback() {
-      this.messageInput.removeEventListener('keypress', this.messageBoxKeyPress);
-      this.btnSend.removeEventListener('click', this.messageFormSubmit);
-    }
-  
+    
     messageBoxKeyPress(event) {
       if (event.keyCode === 13) {
         event.preventDefault();
@@ -158,7 +154,7 @@
         socket.emit('Send message', message);
         this.messageInput.value = '';
       }
-    }  
+    }     
   }
   
   customElements.define('message-box', MessageBox);
