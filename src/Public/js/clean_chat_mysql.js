@@ -64,9 +64,14 @@ $clearChatButton.click(function() {
     });
   
     $('#clear-chat-yes').click(function() {
-      $chat.empty();
+      const chatTemplate = document.getElementById('chat-template');
+      const chatElement = chatTemplate.content.cloneNode(true).querySelector('#chat');
+      const chatContainer = document.getElementById('chat-container');
+      chatContainer.textContent = ''; // Limpia el contenido actual del contenedor de chat
+      // Asumiendo que "message" contiene el contenido del mensaje recibido
+      $chat.prepend('<div class="message">' + message + '</div>');
+      // Agrega el nuevo chat clonado al principio del contenedor
       socket.emit('clear messages');
-      chat.innerHTML = ''; 
     
       // Ocultar botones de confirmación y mostrar ícono de confirmación
       $clearChatButton.find('.clear-chat-confirm').hide();
@@ -78,7 +83,7 @@ $clearChatButton.click(function() {
         $clearChatButton.find('.clear-chat-confirm').remove();
       }, 1000);
     });
-  
+    
     $('#clear-chat-no').click(function() {
     
       // Ocultar botones de confirmación y mostrar ícono de confirmación

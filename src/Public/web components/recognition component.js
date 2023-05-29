@@ -1,11 +1,6 @@
-// 
-  ////
-  ////WEB COMPONENT DEL envio de mensajes
-  ////
-  //
-  document.addEventListener('DOMContentLoaded', function() {
-  $(document).ready(function() {
-  class MessageBox extends HTMLElement {
+document.addEventListener('DOMContentLoaded', function() {
+  $(document).ready(function() {               
+   class MessageBox extends HTMLElement {
     constructor() {
       super();
       const template = document.getElementById('message-box-template');
@@ -62,9 +57,7 @@
           microIcon.classList.add('hidden');
           pauseIcon.classList.remove('hidden');
         }
-        new Notification('Grabación iniciada', {
-          body: 'Comenzó la grabación de voz.'
-        });
+
       };
   
       recognition.onresult = (event) => {
@@ -87,6 +80,13 @@
       new Notification('Grabación finalizada', {
         body: 'Se detuvo la grabación de voz.'
       });
+
+      const message = recognizedMessage.trim();
+      if (message !== '') {
+        socket.emit('Send message', message);
+        this.messageInput.value = '';
+        recognizedMessage = '';
+      }
     }
   
       btnStartStopRecord.addEventListener('click', () => {
@@ -119,8 +119,7 @@
           
         }
       });
-      
-      this.messageForm.addEventListener('submit', function(event) {
+      /*this.messageForm.addEventListener('submit', (event) => {
         const regex = /[\u{1F300}-\u{1F5FF}\u{1F900}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F600}-\u{1F64F}\u{1F680}-\u{1F6FF}]/gu;
         if (regex.test(this.messageInput.value)) {
           event.preventDefault();
@@ -132,16 +131,21 @@
             console.log('No se pudo mostrar la notificación:', err);
           }
         }
-      });
+      });*/
+      
+
       
     }
     connectedCallback() {
-      this.messageInput = document.querySelector('#message');
-      this.messageInput.addEventListener('keypress', this.messageBoxKeyPress.bind(this));
+      this.messageInput = this.shadowRoot.querySelector('#message');
+      this.messageForm = this.shadowRoot.querySelector('#message-form');
+    
+      this.messageInput.addEventListener('keydown', this.messageBoxKeyPress.bind(this));
+      this.messageForm.addEventListener('submit', this.messageFormSubmit.bind(this));
     }
     
     messageBoxKeyPress(event) {
-      if (event.keyCode === 13) {
+      if (event.key === 'Enter') {
         event.preventDefault();
         this.messageFormSubmit(event);
       }
@@ -154,15 +158,10 @@
         socket.emit('Send message', message);
         this.messageInput.value = '';
       }
-    }     
+    }
+    
   }
   
   customElements.define('message-box', MessageBox);
-  // 
-  ////
-  ////WEB COMPONENT FIN
-  ////
-  //
- // Código para crear la clase MessageBox y registrarla como un elemento personalizado.
 });
 });

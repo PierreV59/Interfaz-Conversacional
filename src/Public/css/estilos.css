@@ -431,3 +431,12 @@ button.active svg {
       justify-content: center;
       align-items: center;
     }
+
+    .message-input {
+      height: auto;
+      min-height: 40px; /* Altura mínima deseada */
+      max-height: 120px; /* Altura máxima deseada */
+      overflow-y: auto; /* Agregar barra de desplazamiento vertical cuando se excede la altura máxima */
+      resize: vertical; /* Permitir redimensionar verticalmente */
+    }
+    

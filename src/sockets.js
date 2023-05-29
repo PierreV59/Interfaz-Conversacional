@@ -79,47 +79,54 @@ module.exports = function(io) {
 module.exports = function(io) {
   io.on('connection', (socket) => {
     console.log('Un usuario se ha conectado');
-  
+
     socket.on('Send message', function(data) {
-      io.emit('new message', { message: data });
+      io.emit('new user message', { message: data });
       const https = require('https');
       const options = {
-        hostname: '25a0-200-24-154-53.ngrok.io/',
+        hostname: '9a8c-200-24-154-53.ngrok.io',
         port: 443,
         path: '/webhooks/rest/webhook',
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
       };
-      
+
       const req = https.request(options, (res) => {
         let responseBody = '';
+
         res.on('data', (chunk) => {
           responseBody += chunk;
         });
+
         res.on('end', () => {
           try {
             const response = JSON.parse(responseBody);
             const responseData = response[0].text;
-            io.emit('new message', { message: responseData });
+            io.emit('new bot message', { message: responseData });
             const cleanMsg = responseData.replace(/\p{Emoji}/gu, '');
             console.log('Mensaje insertado correctamente!');
           } catch (error) {
             console.error(error);
+            const errorMessage = 'El asistente no está disponible en este momento. Por favor, inténtalo más tarde.';
+            io.emit('new bot message', { error: true, message: errorMessage });
           }
         });
       });
-      
+
       req.on('error', (error) => {
         console.error(error);
+        const errorMessage = 'El asistente no está disponible en este momento. Por favor, inténtalo más tarde.';
+        io.emit('new bot message', { error: true, message: errorMessage });
       });
-      
+
       req.write(JSON.stringify({ message: data }));
       req.end();
     });
-    
+
     socket.on('clear messages', function() {
       console.log('Mensajes eliminados correctamente!');
       socket.emit('clear chat');
+
     });
   });
 };

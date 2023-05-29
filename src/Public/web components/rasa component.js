@@ -1,47 +1,25 @@
-/*socket.on('new message', function(data) {
-  const now = new Date();
-  const time = now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
-
-  $chat.append('<div class="flex flex-col message-text">' +
-    '<div class="bg-blue-500 p-6 w-96 rounded-3xl rounded-br-none self-end">' +
-    '<small class="text-white rounded font-light">' + data.message + '</small>' +
-    '</div>' +
-    '<small class="text-gray-500 font-light self-end">' + time + '</small>' +
-    '</div>' +
-    '<div class="flex flex-col message-text">' +
-    '<div id="Chatbot" class="bg-gray-200 p-6 w-96 rounded-3xl rounded-bl-none self-start">' +
-    '<small class="text-gray-600 rounded font-light">' + data.response + '</small>' +
-    '</div>' +
-    '<small class="text-gray-500 font-light self-start">' + time + '</small>' +
-    '</div>'
-  );
-});*/
-
 class ChatComponent extends HTMLElement {
   constructor() {
     super();
 
-    // Clone the chat template and attach it to the component
     const template = document.querySelector('#chat-template');
     const content = template.content.cloneNode(true);
     this.appendChild(content);
 
-    // Get the chat container and scroll down button
     const chatContainer = this.querySelector('#chat-container');
     const scrollDownButton = this.querySelector('#scrollDownBtn');
 
-    // Bind the event listener to the scroll down button
     scrollDownButton.addEventListener('click', () => {
       chatContainer.scrollTop = chatContainer.scrollHeight;
     });
 
-    // Listen for new messages and add them to the chat
-    socket.on('new message', function(data) {
+    // Listen for new user messages and add them to the chat
+    socket.on('new user message', function(data) {
       const now = new Date();
       const time = now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
 
       const messageContainer = document.createElement('div');
-      messageContainer.classList.add('flex', 'flex-col', 'message-text');
+      messageContainer.classList.add('flex', 'flex-col', 'message-text', 'animate__animated', 'animate__fadeIn'); // Agregado: Clases de animación
 
       const userMessage = document.createElement('div');
       userMessage.classList.add('bg-blue-500', 'p-6', 'w-96', 'rounded-3xl', 'rounded-br-none', 'self-end');
@@ -53,22 +31,50 @@ class ChatComponent extends HTMLElement {
       userMessageTime.classList.add('text-gray-500', 'font-light', 'self-end');
       userMessageTime.textContent = time;
 
-      const botMessage = document.createElement('div');
-      botMessage.classList.add('bg-gray-200', 'p-6', 'w-96', 'rounded-3xl', 'rounded-bl-none', 'self-start');
-      botMessage.innerHTML = `
-        <small class="text-gray-600 rounded font-light">${data.response}</small>
-      `;
-
-      const botMessageTime = document.createElement('small');
-      botMessageTime.classList.add('text-gray-500', 'font-light', 'self-start');
-      botMessageTime.textContent = time;
-
       messageContainer.appendChild(userMessage);
       messageContainer.appendChild(userMessageTime);
 
-      if (data.response) {
-        messageContainer.appendChild(botMessage);
-        messageContainer.appendChild(botMessageTime);
+      chatContainer.appendChild(messageContainer);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    });
+
+    // Listen for new bot messages and add them to the chat
+    socket.on('new bot message', function(data) {
+      const now = new Date();
+      const time = now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
+
+      const messageContainer = document.createElement('div');
+      messageContainer.classList.add('flex', 'flex-col', 'message-text', 'animate__animated', 'animate__fadeIn'); // Agregado: Clases de animación
+
+      if (data.error) {
+        const botErrorMessage = document.createElement('div');
+        botErrorMessage.classList.add('bg-gray-200', 'p-6', 'w-96', 'rounded-3xl', 'rounded-bl-none', 'self-start');
+        botErrorMessage.innerHTML = `
+          <small class="text-black rounded font-light">${data.message}</small>
+        `;
+
+        const botErrorMessageTime = document.createElement('small');
+        botErrorMessageTime.classList.add('text-gray-500', 'font-light', 'self-start');
+        botErrorMessageTime.textContent = time;
+
+        messageContainer.appendChild(botErrorMessage);
+        messageContainer.appendChild(botErrorMessageTime);
+      } else {
+        const botMessageContainer = document.createElement('div');
+        botMessageContainer.classList.add('flex', 'flex-col', 'items-start');
+
+        const botMessage = document.createElement('div');
+        botMessage.classList.add('bg-gray-300', 'p-6', 'w-96', 'rounded-3xl', 'rounded-bl-none', 'self-start', 'text-gray-600', 'rounded', 'font-light', 'message-text');
+        botMessage.textContent = data.message;
+
+        const botMessageTime = document.createElement('small');
+        botMessageTime.classList.add('text-gray-500', 'font-light', 'self-start');
+        botMessageTime.textContent = time;
+
+        botMessageContainer.appendChild(botMessage);
+        botMessageContainer.appendChild(botMessageTime);
+
+        messageContainer.appendChild(botMessageContainer);
       }
 
       chatContainer.appendChild(messageContainer);
@@ -78,4 +84,3 @@ class ChatComponent extends HTMLElement {
 }
 
 customElements.define('chat-component', ChatComponent);
-
