@@ -84,7 +84,7 @@ module.exports = function(io) {
       io.emit('new user message', { message: data });
       const https = require('https');
       const options = {
-        hostname: '9a8c-200-24-154-53.ngrok.io',
+        hostname: '30e1-200-24-154-53.ngrok.io',
         port: 443,
         path: '/webhooks/rest/webhook',
         method: 'POST',
@@ -101,10 +101,9 @@ module.exports = function(io) {
         res.on('end', () => {
           try {
             const response = JSON.parse(responseBody);
-            const responseData = response[0].text;
-            io.emit('new bot message', { message: responseData });
-            const cleanMsg = responseData.replace(/\p{Emoji}/gu, '');
-            console.log('Mensaje insertado correctamente!');
+            const responseMessages = response.map((item) => item.text);
+            io.emit('new bot message', { messages: responseMessages });
+            console.log('Mensajes insertados correctamente!');
           } catch (error) {
             console.error(error);
             const errorMessage = 'El asistente no está disponible en este momento. Por favor, inténtalo más tarde.';
@@ -126,7 +125,6 @@ module.exports = function(io) {
     socket.on('clear messages', function() {
       console.log('Mensajes eliminados correctamente!');
       socket.emit('clear chat');
-
     });
   });
 };

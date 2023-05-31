@@ -19,7 +19,7 @@ class ChatComponent extends HTMLElement {
       const time = now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
 
       const messageContainer = document.createElement('div');
-      messageContainer.classList.add('flex', 'flex-col', 'message-text', 'animate__animated', 'animate__fadeIn'); // Agregado: Clases de animación
+      messageContainer.classList.add('flex', 'flex-col', 'message-text', 'animate__animated', 'animate__fadeIn');
 
       const userMessage = document.createElement('div');
       userMessage.classList.add('bg-blue-500', 'p-6', 'w-96', 'rounded-3xl', 'rounded-br-none', 'self-end');
@@ -35,7 +35,9 @@ class ChatComponent extends HTMLElement {
       messageContainer.appendChild(userMessageTime);
 
       chatContainer.appendChild(messageContainer);
-      chatContainer.scrollTop = chatContainer.scrollHeight;
+      messageContainer.scrollIntoView(); // Desplaza automáticamente hacia abajo
+
+      // chatContainer.scrollTop = chatContainer.scrollHeight; (comenta esta línea)
     });
 
     // Listen for new bot messages and add them to the chat
@@ -44,7 +46,7 @@ class ChatComponent extends HTMLElement {
       const time = now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
 
       const messageContainer = document.createElement('div');
-      messageContainer.classList.add('flex', 'flex-col', 'message-text', 'animate__animated', 'animate__fadeIn'); // Agregado: Clases de animación
+      messageContainer.classList.add('flex', 'flex-col', 'message-text', 'animate__animated', 'animate__fadeIn');
 
       if (data.error) {
         const botErrorMessage = document.createElement('div');
@@ -60,25 +62,29 @@ class ChatComponent extends HTMLElement {
         messageContainer.appendChild(botErrorMessage);
         messageContainer.appendChild(botErrorMessageTime);
       } else {
-        const botMessageContainer = document.createElement('div');
-        botMessageContainer.classList.add('flex', 'flex-col', 'items-start');
+        data.messages.forEach((message) => {
+          const botMessageContainer = document.createElement('div');
+          botMessageContainer.classList.add('flex', 'flex-col', 'items-start');
 
-        const botMessage = document.createElement('div');
-        botMessage.classList.add('bg-gray-300', 'p-6', 'w-96', 'rounded-3xl', 'rounded-bl-none', 'self-start', 'text-gray-600', 'rounded', 'font-light', 'message-text');
-        botMessage.textContent = data.message;
+          const botMessage = document.createElement('div');
+          botMessage.classList.add('bg-gray-200', 'p-6', 'w-96', 'rounded-3xl', 'rounded-bl-none', 'self-start');
+          botMessage.textContent = message;
 
-        const botMessageTime = document.createElement('small');
-        botMessageTime.classList.add('text-gray-500', 'font-light', 'self-start');
-        botMessageTime.textContent = time;
+          const botMessageTime = document.createElement('small');
+          botMessageTime.classList.add('text-gray-500', 'font-light', 'self-start');
+          botMessageTime.textContent = time;
 
-        botMessageContainer.appendChild(botMessage);
-        botMessageContainer.appendChild(botMessageTime);
+          botMessageContainer.appendChild(botMessage);
+          botMessageContainer.appendChild(botMessageTime);
 
-        messageContainer.appendChild(botMessageContainer);
+          messageContainer.appendChild(botMessageContainer);
+        });
       }
 
       chatContainer.appendChild(messageContainer);
-      chatContainer.scrollTop = chatContainer.scrollHeight;
+      messageContainer.scrollIntoView();
+
+      // chatContainer.scrollTop = chatContainer.scrollHeight;
     });
   }
 }
