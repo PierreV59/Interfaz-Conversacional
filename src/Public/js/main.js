@@ -18,15 +18,21 @@ $(document).ready(function() {
   $('#toggle-dark-mode').click(function() {
     $('body').toggleClass('dark-mode');
     if ($('body').hasClass('dark-mode')) {
-        $('#dark-mode-text').text('Modo claro');
-        sunIcon.style.display = "block";
-        moonIcon.style.display = "none";
+      $('#dark-mode-text').text('Modo claro');
+      sunIcon.style.display = "block";
+      moonIcon.style.display = "none";
+      $('.message-text .bg-gray-200').css('background-color', '#4b5563');
+      $('.message-text .bg-gray-200 .text-black').css('color', '#FFFF');
+
     } else {
-        $('#dark-mode-text').text('Modo oscuro');
-        sunIcon.style.display = "none";
-        moonIcon.style.display = "block";
+      $('#dark-mode-text').text('Modo oscuro');
+      sunIcon.style.display = "none";
+      moonIcon.style.display = "block";
+      $('.message-text .bg-gray-200').css('background-color', '#f3f4f6');
+      $('.message-text .bg-gray-200 .text-black').css('color', '#000');
     }
-});
+  });
+  
 
   $menuButton.click(function() {
     $menu.slideToggle('fast', function() {

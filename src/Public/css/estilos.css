@@ -218,6 +218,9 @@ button.active svg {
 #message-form {
   display: flex;
 }
+.dark-mode .input{
+  background-color: #4b5563;
+}
 
 .input-container {
   display: flex;
@@ -439,4 +442,100 @@ button.active svg {
       overflow-y: auto; /* Agregar barra de desplazamiento vertical cuando se excede la altura máxima */
       resize: vertical; /* Permitir redimensionar verticalmente */
     }
-    
+    /* Estilo inicial del div del mensaje del bot */.dark-mode .bot-message {
+  background-color: #4A5568;
+  color: white;
+}
+
+/* Estilos para el mensaje del bot */
+.bot-message {
+  margin-bottom: 12px;
+  padding: 12px;
+  border-radius: 0px;
+}
+
+.bot-message p {
+  margin: 0;
+}
+
+/* Estilos para el mensaje del bot en modo oscuro */
+.dark-mode .bot-message p {
+  color: white;
+}
+
+/* Estilos para el mensaje de error del bot en modo oscuro */
+.dark-mode .bot-error-message p {
+  color: white;
+}
+
+
+
+/*  responsive */
+#icon-menu{
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  left: 20px;
+  top: 5px;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  padding: 8px;
+  font-size: 20px;
+
+}
+
+#icon-menu:hover{
+  opacity: 0.8;
+}
+
+#con {
+  max-width: 100%;
+  width: 300px; /* Establece un ancho fijo para el contenedor */
+  /* Resto de estilos */
+}
+
+
+
+
+.message-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.message-text > div {
+  word-wrap: break-word;
+}
+
+
+/* Estilos normales para el color de fondo gray-200 en respuestas del bot */
+.message-text .bg-gray-200 {
+  background-color: #f3f4f6;
+}
+
+/* Estilos para el modo oscuro en respuestas del bot */
+.dark-mode .message-text .bg-gray-200 {
+  background-color: #4b5563;
+}
+
+/* Estilos para el texto dentro de respuestas del bot en gray-200 */
+.message-text .bg-gray-200 .text-black {
+  color: #000;
+}
+.dark-mode .message-text .bg-gray-200 .text-black {
+  color: #ffffff;
+}
+
+/* Estilos para el modo oscuro en el contenedor principal */
+.dark-mode #chat-container {
+  background-color: #2d3748;
+  color: #fff;
+}
+.dark-mode message-box {
+  /* Agrega los estilos específicos para el modo oscuro */
+  background-color: #333333;
+  color: #ffffff;
+  /* Añade más estilos si es necesario */
+}

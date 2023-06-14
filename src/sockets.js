@@ -1,90 +1,135 @@
-/*const mysql = require('mysql');
 
-const connectionB = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'chat'
+const axios = require('axios');
+const FormData = require('form-data');
+const { promisify } = require('util');
+const https = require('https');
+const { v4: uuidv4 } = require('uuid');
+const winston = require('winston');
+
+const logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.printf((info) => `[${info.timestamp}] ${info.level}: ${info.message}`)
+  ),
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: 'logs.log' }),
+  ],
 });
 
-connectionB.connect(function(err) {
-  if (err) {
-    console.error('Error al conectarse a la base de datos: ' + err.stack);
-    return;
-  }
-  console.log('Conectado a la base de datos como el ID ' + connectionB.threadId);
-});
+const WELCOME_MESSAGE = 'Por favor, ingrese sus credenciales para realizar peticiones al asistente virtual';
+const IDENTIFICATION_MESSAGE = 'Ingrese su número de identificación';
+const GREETING_MESSAGE = '¡Hola, %s! Se ha establecido la conexión correctamente. Ahora puedes realizar peticiones al asistente virtual';
+const INVALID_CREDENTIALS_MESSAGE = 'Las credenciales son incorrectas. Inténtelo de nuevo.';
+const CONNECTION_ERROR_MESSAGE = 'Error al establecer conexión con la API';
+const UNAVAILABLE_ASSISTANT_MESSAGE = 'El asistente no está disponible en este momento. Por favor, inténtalo más tarde.';
 
-module.exports = function(io) {
+const postRequest = promisify(https.request);
+
+module.exports = function (io) {
   io.on('connection', (socket) => {
-    console.log('Un usuario se ha conectado');
-    connectionB.query('SELECT * FROM messages ORDER BY msg_id ASC', function(error, results, fields) {
-      if (error) throw error;
-      results.forEach(function(result) {
-        socket.emit('new message', { message: result.msg, response: result.bots });
-      });
-    });    
-  
-    socket.on('Send message', function(data) {
-      const https = require('https');
-      const options = {
-        hostname: '25a0-200-24-154-53.ngrok.io/',
-        port: 443,
-        path: '/webhooks/rest/webhook',
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' }
-      };
-      
-      const req = https.request(options, (res) => {
-        let responseBody = '';
-        res.on('data', (chunk) => {
-          responseBody += chunk;
-        });
-        res.on('end', () => {
-          try {
-            const response = JSON.parse(responseBody);
-            const responseData = response[0].text;
-            io.emit('new message', { message: data, response: responseData });
-            const cleanMsg = responseData.replace(/\p{Emoji}/gu, '');
-            connectionB.query('INSERT INTO messages (incoming_msg_id, outgoing_msg_id, msg, bots) VALUES (?, ?, ?, ?)', [2, 3, data, cleanMsg], function(error, results, fields) {
-              if (error) throw error;
-              console.log('Mensaje insertado correctamente!');
-              });
-          } catch (error) {
-            console.error(error);
-          }
-        });
-      });
-      
-      req.on('error', (error) => {
-        console.error(error);
-      });
-      
-      req.write(JSON.stringify({ message: data }));
-      req.end();
-    });
-    socket.on('clear messages', function() {
-      try {
-        connectionB.query('DELETE FROM messages', function(error, results, fields) {
-          if (error) throw error;
-          console.log('Mensajes eliminados correctamente!');
-          socket.emit('clear chat');
-        });
-      } catch (error) {
-        console.log('Error al eliminar mensajes:', error);
+    let isVerified = false;
+    let userName = '';
+
+    let identification = '';
+    let password = '';
+
+    socket.emit('new user VALIDATION', { message: WELCOME_MESSAGE });
+    socket.emit('new user VALIDATION', { message: IDENTIFICATION_MESSAGE });
+
+    socket.on('Send message', handleMessage);
+    socket.on('clear messages', clearMessages);
+
+    async function handleMessage(data) {
+      const userId = socket.id;
+
+      if (!isVerified) {
+        if (!identification) {
+          identification = data;
+          io.to(userId).emit('new user message', { message: data });
+          io.to(userId).emit('new user VALIDATION', { message: 'Por favor, ingrese su contraseña' });
+          return;
+        } else if (!password) {
+          password = data;
+          io.to(userId).emit('new user message', { message: data });
+        }
       }
-    });
-  });
-};*/
-module.exports = function(io) {
-  io.on('connection', (socket) => {
-    console.log('Un usuario se ha conectado');
 
-    socket.on('Send message', function(data) {
-      io.emit('new user message', { message: data });
+      if (identification && password && !isVerified) {
+        await verifyCredentials(userId);
+      } else {
+        if (!isVerified) {
+          const errorMessage = 'No puede realizar peticiones. Por favor, ingrese sus credenciales';
+          io.to(userId).emit('new bot message', { error: true, message: errorMessage });
+
+          resetCredentials(userId);
+          return;
+        }
+
+        io.to(userId).emit('new user message', { message: data });
+        requestToAssistant(userId, data);
+      }
+    }
+
+    async function verifyCredentials(userId) {
+      const url = 'http://servicios.espam.edu.ec/Datos/login';
+      const formData = new FormData();
+      formData.append('identificacion', identification);
+      formData.append('password', password);
+
+      const instance = axios.create({
+        headers: formData.getHeaders(),
+      });
+
+      try {
+        const response = await instance.post(url, formData);
+        if (response.status === 200) {
+          const userData = response.data.data;
+          const exists = userData.some((user) => user.Identificacion === identification);
+          if (exists) {
+            isVerified = true;
+            const user = userData.find((user) => user.Identificacion === identification);
+            const { Nombre1, Apellido1 } = user;
+            userName = `${Nombre1} ${Apellido1} `;
+            logger.info('El usuario existe.');
+
+            const greetingMessage = `¡Hola, ${userName}! Se ha establecido la conexión correctamente. Ahora puedes realizar peticiones al asistente virtual`;
+            io.to(userId).emit('new bot message', { error: true, message: greetingMessage });
+          } else {
+            logger.info('El usuario no existe o las credenciales son incorrectas.');
+            io.to(userId).emit('new bot message', { error: true, message: INVALID_CREDENTIALS_MESSAGE });
+
+            resetCredentials(userId);
+          }
+        } else {
+          logger.info(`No se pudo establecer la conexión con la API: ${response.status}`);
+          io.to(userId).emit('new bot message', { error: true, message: CONNECTION_ERROR_MESSAGE });
+
+          resetCredentials(userId);
+        }
+      } catch (error) {
+        logger.error(`No se pudo establecer la conexión con la API: ${error.message}`);
+        io.to(userId).emit('new bot message', { error: true, message: CONNECTION_ERROR_MESSAGE });
+
+        resetCredentials(userId);
+      }
+    }
+
+    function requestToAssistant(userId, data) {
+      if (!isVerified) {
+        const errorMessage = 'No puede realizar peticiones. Por favor, ingrese sus credenciales';
+        io.to(userId).emit('new bot message', { error: true, message: errorMessage });
+
+
+        identification = '';
+        password = '';
+        io.to(userId).emit('new user VALIDATION', { message: welcomeMessage });
+        return;
+      }
       const https = require('https');
       const options = {
-        hostname: '30e1-200-24-154-53.ngrok.io',
+        hostname: 'e8c7-200-24-154-53.ngrok.io',
         port: 443,
         path: '/webhooks/rest/webhook',
         method: 'POST',
@@ -102,12 +147,11 @@ module.exports = function(io) {
           try {
             const response = JSON.parse(responseBody);
             const responseMessages = response.map((item) => item.text);
-            io.emit('new bot message', { messages: responseMessages });
-            console.log('Mensajes insertados correctamente!');
+            io.to(userId).emit('new bot message', { messages: responseMessages });
           } catch (error) {
             console.error(error);
             const errorMessage = 'El asistente no está disponible en este momento. Por favor, inténtalo más tarde.';
-            io.emit('new bot message', { error: true, message: errorMessage });
+            io.to(userId).emit('new bot message', { error: true, message: errorMessage });
           }
         });
       });
@@ -115,16 +159,24 @@ module.exports = function(io) {
       req.on('error', (error) => {
         console.error(error);
         const errorMessage = 'El asistente no está disponible en este momento. Por favor, inténtalo más tarde.';
-        io.emit('new bot message', { error: true, message: errorMessage });
+        io.to(userId).emit('new bot message', { error: true, message: errorMessage });
       });
 
       req.write(JSON.stringify({ message: data }));
       req.end();
-    });
 
-    socket.on('clear messages', function() {
-      console.log('Mensajes eliminados correctamente!');
-      socket.emit('clear chat');
-    });
+    }
+    
+    function resetCredentials(userId) {
+      identification = '';
+      password = '';
+      io.to(userId).emit('new user VALIDATION', { message: WELCOME_MESSAGE });
+    }
+
+    function clearMessages() {
+      const userId = socket.id;
+      logger.info('Mensajes eliminados correctamente!');
+      io.to(userId).emit('clear chat');
+    }
   });
 };

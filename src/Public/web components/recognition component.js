@@ -1,5 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
-  $(document).ready(function() {               
+             
    class MessageBox extends HTMLElement {
     constructor() {
       super();
@@ -24,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const microIcon = this.shadowRoot.getElementById('micro');
       const pauseIcon = this.shadowRoot.getElementById('pause');
       
-  
+
       let isRecording = false;
       let recognizedMessage = '';
   
@@ -119,6 +118,9 @@ document.addEventListener('DOMContentLoaded', function() {
           
         }
       });
+      // Escuchar el evento de cambio de modo oscuro
+
+
       /*this.messageForm.addEventListener('submit', (event) => {
         const regex = /[\u{1F300}-\u{1F5FF}\u{1F900}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F600}-\u{1F64F}\u{1F680}-\u{1F6FF}]/gu;
         if (regex.test(this.messageInput.value)) {
@@ -141,7 +143,6 @@ document.addEventListener('DOMContentLoaded', function() {
       this.messageForm = this.shadowRoot.querySelector('#message-form');
     
       this.messageInput.addEventListener('keydown', this.messageBoxKeyPress.bind(this));
-      this.messageForm.addEventListener('submit', this.messageFormSubmit.bind(this));
     }
     
     messageBoxKeyPress(event) {
@@ -160,8 +161,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
     
+    
   }
   
   customElements.define('message-box', MessageBox);
-});
-});
