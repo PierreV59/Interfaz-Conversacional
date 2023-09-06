@@ -294,10 +294,110 @@ button.active svg {
 .dark-mode h1{
   color: white;
 }
-/* Modo oscuro */
-.dark-mode {
-  background-color: #4b5563;
+
+.dark-mode h2{
+  color: black;
 }
+/* Modo oscuro */
+/* Estilos para la modal en modo claro */
+#modal2 {
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente en modo claro */
+}
+
+#modal2 .bg-white {
+  background-color: #ffffff; /* Color de fondo en modo claro */
+}
+
+#modal2 h2 {
+  color: #333333; /* Color de texto del título en modo claro */
+}
+
+#modal2 p {
+  color: #666666; /* Color de texto del mensaje en modo claro */
+}
+
+#modal2 button {
+  background-color: #3651be; /* Color de fondo del botón en modo claro */
+  color: #ffffff; /* Color de texto del botón en modo claro */
+}
+
+#modal2 button:hover {
+  background-color: #4b5563
+}
+
+/* Estilos para la modal en modo oscuro */
+
+.dark-mode #modal2 .bg-white {
+  background-color: #2d3748; /* Color de fondo en modo oscuro */
+}
+
+.dark-mode #modal2 h2 {
+  color: #f7fafc; /* Color de texto del título en modo oscuro */
+}
+
+.dark-mode #modal2 p {
+  color: #cbd5e0; /* Color de texto del mensaje en modo oscuro */
+}
+
+.dark-mode #modal2 button {
+  background-color: #f56565; /* Color de fondo del botón en modo oscuro */
+  color: #ffffff; /* Color de texto del botón en modo oscuro */
+}
+
+.dark-mode #modal2 button:hover {
+  background-color: #e53e3e; /* Color de fondo del botón al pasar el cursor en modo oscuro */
+}
+/* Estilos para la modal en modo claro */
+#modal {
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente en modo claro */
+}
+
+#modal .bg-white {
+  background-color: #ffffff; /* Color de fondo en modo claro */
+}
+
+#modal h2 {
+  color: #333333; /* Color de texto del título en modo claro */
+}
+
+#modal p {
+  color: #666666; /* Color de texto del mensaje en modo claro */
+}
+
+#modal button {
+  background-color: #3651be; /* Color de fondo del botón en modo claro */
+  color: #ffffff; /* Color de texto del botón en modo claro */
+}
+
+#modal button:hover {
+  background-color: #4b5563
+}
+
+/* Estilos para la modal en modo oscuro */
+
+
+.dark-mode #modal .bg-white {
+  background-color: #2d3748; /* Color de fondo en modo oscuro */
+}
+
+.dark-mode #modal h2 {
+  color: #f7fafc; /* Color de texto del título en modo oscuro */
+}
+
+.dark-mode #modal p {
+  color: #cbd5e0; /* Color de texto del mensaje en modo oscuro */
+}
+
+.dark-mode #modal button {
+  background-color: #f56565; /* Color de fondo del botón en modo oscuro */
+  color: #ffffff; /* Color de texto del botón en modo oscuro */
+}
+
+.dark-mode #modal button:hover {
+  background-color: #e53e3e; /* Color de fondo del botón al pasar el cursor en modo oscuro */
+}
+
+
 
 /* Barra de scroll */
 .dark-mode ::-webkit-scrollbar {
@@ -468,37 +568,81 @@ button.active svg {
   color: white;
 }
 
-
-
-/*  responsive */
-#icon-menu{
-  width: 50px;
-  height: 50px;
-  position: absolute;
-  left: 20px;
-  top: 5px;
-  display: none;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  padding: 8px;
-  font-size: 20px;
-
+#modal2{
+  display: flex;
+  visibility: hidden;
 }
 
-#icon-menu:hover{
-  opacity: 0.8;
-}
+     /* Estilos para el contenedor de la barra */
+     #Barraa {
+      position: relative; /* Agregamos una posición relativa para que el icono pueda posicionarse correctamente */
+      
+    }
 
-#con {
-  max-width: 100%;
-  width: 300px; /* Establece un ancho fijo para el contenedor */
-  /* Resto de estilos */
-}
+    /* Estilos para el botón del menú */
+    #icon-menu-container {
+      position: absolute;
+      top: 25px;
+      left: 20px; /* Cambiamos 'right' por 'left' para posicionar en el lado izquierdo */
+      display: flex; /* Agregamos 'display: flex' para que el ícono esté en línea con el texto */
+      align-items: center; /* Alineamos los elementos verticalmente en el centro */
+      gap: 5px; /* Añadimos espacio entre el ícono y el texto */
+    }
 
+    /* Efecto de opacidad al pasar el mouse por el botón del menú */
+    #icon-menu-container:hover{
+      opacity: 0.8;
+    }
 
+    /* Estilos para el contenedor del menú */
+    #con {
+      max-width: 100%;
+      width: 300px; /* Establece un ancho fijo para el contenedor */
+      /* Resto de estilos */
+    }
 
+    /* Transiciones para suavizar la aparición y desaparición del menú en pantallas pequeñas */
+    @media screen and (max-width: 800px) {
+      #icon-menu-container {
+        display: flex;
+      }
 
+      /* Mostrar el menú */
+      #con.visible {
+        transform: translateX(0);
+        opacity: 1;
+      }
+
+      /* Ocultar el menú */
+      #con.hidden {
+        transform: translateX(-100%);
+        opacity: 0;
+        pointer-events: none; /* Evitar que se pueda hacer clic en elementos ocultos */
+      }
+
+      /* Animación para la aparición y desaparición del menú */
+      @keyframes slideIn {
+        from {
+          transform: translateX(-100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideOut {
+        from {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(-100%);
+          opacity: 0;
+        }
+      }
+    }
 .message-text {
   display: flex;
   flex-direction: column;

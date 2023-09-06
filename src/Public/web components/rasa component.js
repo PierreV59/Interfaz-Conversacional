@@ -51,7 +51,7 @@ class ChatComponent extends HTMLElement {
       const userMessage = document.createElement('div');
       userMessage.classList.add('bg-blue-500', 'p-6', 'rounded-3xl', 'rounded-br-none', 'self-end');
       userMessage.innerHTML = `
-        <small class="text-white rounded font-light">${data.message}</small>
+        <small class="text-white rounded font-light" style="font-family: 'Poppins', sans-serif;">${data.message}</small>
       `;
     
       const userMessageTime = document.createElement('small');
@@ -76,7 +76,7 @@ class ChatComponent extends HTMLElement {
       const userMessage = document.createElement('div');
       userMessage.classList.add('bg-blue-500', 'p-6', 'rounded-3xl', 'rounded-br-none', 'self-end');
       userMessage.innerHTML = `
-        <small class="text-white rounded font-light">${data.message}</small>
+        <small class="text-white rounded font-light" style="font-family: 'Poppins', sans-serif;">${data.message}</small>
       `;
     
       const userMessageTime = document.createElement('small');
@@ -101,7 +101,7 @@ class ChatComponent extends HTMLElement {
       const botErrorMessage = document.createElement('div');
       botErrorMessage.classList.add('bg-gray-200', 'p-6', 'rounded-3xl', 'rounded-bl-none', 'self-start');
       botErrorMessage.innerHTML = `
-        <small class="text-black rounded font-light">${data.message}</small>
+        <small class="text-black rounded font-light" style="font-family: 'Poppins', sans-serif;">${data.message}</small>
       `;
     
       const botErrorMessageTime = document.createElement('small');
@@ -113,6 +113,31 @@ class ChatComponent extends HTMLElement {
     
       chatContainer.appendChild(messageContainer);
       messageContainer.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    socket.on('new user r', function(data) {
+      const now = new Date();
+      const time = now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
+    
+      const messageContainer = document.createElement('div');
+      messageContainer.classList.add('flex', 'flex-col', 'message-text', 'animate__animated', 'animate__fadeIn');
+    
+      const botErrorMessage = document.createElement('div');
+      botErrorMessage.classList.add('bg-gray-200', 'p-6', 'rounded-3xl', 'rounded-bl-none', 'self-start');
+      botErrorMessage.innerHTML = `
+        <small class="text-black rounded font-light" style="font-family: 'Poppins', sans-serif;">${data.message}</small>
+      `;
+    
+      const botErrorMessageTime = document.createElement('small');
+      botErrorMessageTime.classList.add('text-gray-500', 'font-light', 'self-start');
+      botErrorMessageTime.textContent = time;
+    
+      messageContainer.appendChild(botErrorMessage);
+      messageContainer.appendChild(botErrorMessageTime);
+    
+      chatContainer.appendChild(messageContainer);
+      messageContainer.scrollIntoView({ behavior: 'smooth' });
+      console.log(data.message)
     });
     
     socket.on('new bot message', function(data) {
@@ -126,7 +151,54 @@ class ChatComponent extends HTMLElement {
         const botErrorMessage = document.createElement('div');
         botErrorMessage.classList.add('bg-gray-200', 'p-6', 'rounded-3xl', 'rounded-bl-none', 'self-start');
         botErrorMessage.innerHTML = `
-          <small class="text-black rounded font-light">${data.message}</small>
+          <small class="text-black rounded font-light" style="font-family: 'Poppins', sans-serif;">${data.message}</small>
+        `;
+    
+        const botErrorMessageTime = document.createElement('small');
+        botErrorMessageTime.classList.add('text-gray-500', 'font-light', 'self-start');
+        botErrorMessageTime.textContent = time;
+    
+        messageContainer.appendChild(botErrorMessage);
+        messageContainer.appendChild(botErrorMessageTime);
+      } else {
+        data.messages.forEach((message) => {
+          const botMessageContainer = document.createElement('div');
+          botMessageContainer.classList.add('flex', 'flex-col', 'items-start');
+    
+          const botMessage = document.createElement('div');
+          botMessage.classList.add('bg-gray-200', 'p-6', 'rounded-3xl', 'rounded-bl-none', 'self-start' );
+          botMessage.textContent = message;
+          botMessage.style.fontFamily = "'Poppins', sans-serif";
+          botMessage.style.fontSize = data.fontSize;
+    
+          const botMessageTime = document.createElement('small');
+          botMessageTime.classList.add('text-gray-500', 'font-light', 'self-start');
+          botMessageTime.textContent = time;
+    
+          botMessageContainer.appendChild(botMessage);
+          botMessageContainer.appendChild(botMessageTime);
+    
+          messageContainer.appendChild(botMessageContainer);
+        });
+      }
+    
+      chatContainer.appendChild(messageContainer);
+      messageContainer.scrollIntoView({ behavior: 'smooth' });
+    });
+    
+
+    socket.on('new bot VALIDATIONS', function(data) {
+      const now = new Date();
+      const time = now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
+    
+      const messageContainer = document.createElement('div');
+      messageContainer.classList.add('flex', 'flex-col', 'message-text', 'animate__animated', 'animate__fadeIn');
+    
+      if (data.error) {
+        const botErrorMessage = document.createElement('div');
+        botErrorMessage.classList.add('bg-gray-200', 'p-6', 'rounded-3xl', 'rounded-bl-none', 'self-start');
+        botErrorMessage.innerHTML = `
+          <small class="text-black rounded font-light" style="font-family: 'Poppins', sans-serif;">${data.message}</small>
         `;
     
         const botErrorMessageTime = document.createElement('small');
