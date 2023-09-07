@@ -4,7 +4,7 @@ const { promisify } = require('util');
 const https = require('https');
 const { v4: uuidv4 } = require('uuid');
 const winston = require('winston');
-//const { User } = require('./Models/Chat');
+const { User } = require('./Models/Chat');
 
 const logger = winston.createLogger({
   level: 'info',
