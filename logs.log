@@ -559,3 +559,17 @@
 [2023-09-06T22:18:01.046Z] error: No se pudo establecer la conexión con la API: User is not defined
 [2023-09-07T02:06:15.746Z] info: El usuario existe.
 [2023-09-07T02:07:41.187Z] info: El usuario existe.
+[2023-09-07T17:53:34.964Z] info: El usuario existe.
+[2023-09-07T17:56:54.652Z] info: El usuario existe.
+[2023-09-07T17:57:14.711Z] info: El usuario existe.
+[2023-09-07T18:00:54.342Z] info: El usuario existe.
+[2023-09-07T18:25:53.556Z] info: El usuario existe.
+[2023-09-08T21:58:23.489Z] info: El usuario existe.
+[2023-09-08T21:58:35.148Z] info: El usuario existe.
+[2023-09-08T22:10:27.320Z] info: El usuario existe.
+[2023-09-08T22:12:35.508Z] info: El usuario existe.
+[2023-09-08T22:56:43.496Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-09-08T22:56:43.500Z] error: No se pudo establecer la conexión con la API: Las credenciales son incorrectas. Inténtelo de nuevo.
+[2023-09-08T23:00:40.085Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-09-08T23:00:40.087Z] error: No se pudo establecer la conexión con la API: Las credenciales son incorrectas. Inténtelo de nuevo.
+[2023-09-08T23:00:46.713Z] info: El usuario existe.

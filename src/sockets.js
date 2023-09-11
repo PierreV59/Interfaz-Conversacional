@@ -45,7 +45,7 @@ module.exports = function (io) {
 
     async function handleMessage(data) {
       const userId = socket.id;
-
+    
       if (!isVerified) {
         if (!identification) {
           if (!validateIdentification(data)) {
@@ -53,7 +53,7 @@ module.exports = function (io) {
             io.to(userId).emit('new bot message', { error: true, message: errorMessage });
             return;
           }
-
+    
           identification = data;
           io.to(userId).emit('new user message', { message: data });
           io.to(userId).emit('new user VALIDATION', { message: 'Por favor, ingrese su contraseña' });
@@ -64,12 +64,12 @@ module.exports = function (io) {
             io.to(userId).emit('new bot message', { error: true, message: errorMessage });
             return;
           }
-
+    
           password = data;
           io.to(userId).emit('new user message', { message: data });
         }
       }
-
+    
       if (identification && password && !isVerified) {
         try {
           await verifyCredentials(userId);
@@ -80,16 +80,22 @@ module.exports = function (io) {
         if (!isVerified) {
           const errorMessage = 'No puede realizar peticiones. Por favor, ingrese sus credenciales';
           io.to(userId).emit('new bot message', { error: true, message: errorMessage });
-
+    
           resetCredentials(userId);
           return;
         }
-
+    
         io.to(userId).emit('new user message', { message: data });
         requestToAssistant(userId, data);
       }
-    }
 
+    }
+    function saveMessageToLocalStorage(message) {
+      const storedMessages = JSON.parse(localStorage.getItem('chatMessages')) || [];
+      storedMessages.push(message);
+      localStorage.setItem('chatMessages', JSON.stringify(storedMessages));
+    }
+    
     async function verifyCredentials(userId) {
       const url = 'http://servicios.espam.edu.ec/Datos/login';
       const formData = new FormData();

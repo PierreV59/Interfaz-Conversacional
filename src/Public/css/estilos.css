@@ -259,6 +259,9 @@ button.active svg {
   border-color: #4b5563;
   box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.20);
 }
+.dark-mode #search-input {
+  color: white; /* Cambia el color de texto a blanco en modo oscuro */
+}
  
 #voice-canvas {
   display: none;
@@ -572,6 +575,37 @@ button.active svg {
   display: flex;
   visibility: hidden;
 }
+/* Modo oscuro */
+.dark-mode #icon-menu-container svg{
+  color: rgb(255, 255, 255); /* Cambia el color del texto en modo oscuro a gris */
+}
+/* En modo oscuro, cambia el color de fondo, el color del texto y otros estilos del botón */
+.dark-mode #icon-menu-container button {
+  background-color: gray; /* Cambia el color de fondo del botón a gris en modo oscuro */
+  color: white; /* Cambia el color del texto a blanco en modo oscuro */
+  /* Agrega otros estilos necesarios aquí */
+}
+/* Cambia el color de fondo del input y los botones en modo oscuro */
+.dark-mode #input-container {
+  background-color: gray;
+  color: white;
+}
+
+.dark-mode #input-container input[type="text"] {
+  background-color: gray;
+  color: white;
+  border: 1px solid gray;
+}
+
+.dark-mode #input-container button {
+  background-color: blue;
+  color: white;
+}
+
+
+/* Agrega otros estilos para el modo oscuro si es necesario */
+
+
 
      /* Estilos para el contenedor de la barra */
      #Barraa {
