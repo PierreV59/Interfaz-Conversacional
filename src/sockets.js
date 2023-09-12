@@ -228,7 +228,8 @@ module.exports = function (io) {
     }
 
     function clearMessages() {
-      io.to(socket.id).emit('clear messages');
+      io.to(socket.id).emit('clear chat');
+
       User.findOne({ identification: identification })
         .then((user) => {
           if (!user) {
@@ -240,6 +241,7 @@ module.exports = function (io) {
           User.updateOne({ identification: identification }, { $set: { conversations: [] } })
             .then(() => {
               console.log(`Se han eliminado las conversaciones del usuario con identificación: ${deletedIdentification}.`);
+              
             })
             .catch((err) => {
               console.error('Error al eliminar las conversaciones del usuario:', err);

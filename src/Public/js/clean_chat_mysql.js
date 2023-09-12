@@ -26,16 +26,17 @@ $clearChatButton.click(function() {
 
 
     $('#clear-chat-yes').click(function() {
+    
+      // Agrega el nuevo chat clonado al principio del contenedor
+      socket.emit('clear messages');
+      // Ocultar la ventana modal después de limpiar el chat
+      $('#modal2').hide();
       const chatTemplate = document.getElementById('chat-template');
       const chatElement = chatTemplate.content.cloneNode(true).querySelector('#chat');
       const chatContainer = document.getElementById('chat-container');
       chatContainer.textContent = ''; // Limpia el contenido actual del contenedor de chat
       // Asumiendo que "message" contiene el contenido del mensaje recibido
       $chat.prepend('<div class="message">' + message + '</div>');
-      // Agrega el nuevo chat clonado al principio del contenedor
-      //socket.emit('clear messages');
-      // Ocultar la ventana modal después de limpiar el chat
-      $('#modal2').hide();
     });
     
     $('#clear-chat-no').click(function() {
