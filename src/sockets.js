@@ -172,61 +172,70 @@ module.exports = function (io) {
       if (!isVerified) {
         const errorMessage = 'No puede realizar peticiones. Por favor, ingrese sus credenciales';
         io.to(userId).emit('new bot message', { error: true, message: errorMessage, fontSize: '12px' });
-
+    
         identification = '';
         password = '';
-        io.to(userId).emit('new user VALIDATION', { message: welcomeMessage });
+        io.to(userId).emit('new user VALIDATION', { message: WELCOME_MESSAGE });
         return;
       }
-
+    
       const https = require('https');
       const options = {
-        hostname: '0a8f-200-24-154-53.ngrok.io',
+        hostname: 'e38f-200-24-154-53.ngrok.io',
         port: 443,
         path: '/webhooks/rest/webhook',
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
       };
-
+    
       const req = https.request(options, async (res) => {
         let responseBody = '';
-
+    
         res.on('data', (chunk) => {
           responseBody += chunk;
         });
-
+    
         res.on('end', async () => {
           try {
-            const response = JSON.parse(responseBody);
-            const responseMessages = response.map((item) => item.text);
-            const joinedMessages = responseMessages.join('\n');
-
-            io.to(userId).emit('new bot message', { messages: responseMessages, fontSize: '12px' });
-            const conversation = { userId: socket.id, message: joinedMessages, userMessage: data };
-
-            await User.findOneAndUpdate(
-              { identification: identification },
-              { $push: { conversations: conversation } }
-            );
-
+            if (responseBody && responseBody.trim() !== '') {
+              const response = JSON.parse(responseBody);
+              const responseMessages = response.map((item) => item.text);
+              const joinedMessages = responseMessages.join('\n');
+    
+              io.to(userId).emit('new bot message', { messages: responseMessages, fontSize: '12px' });
+              const conversation = { userId: socket.id, message: joinedMessages, userMessage: data };
+    
+              await User.findOneAndUpdate(
+                { identification: identification },
+                { $push: { conversations: conversation } }
+              );
+            } else {
+              console.error('La respuesta del servidor está vacía o no válida.');
+              io.to(userId).emit('new bot message', { error: true, message: 'Respuesta vacía o no válida del asistente', fontSize: '12px' });
+            }
           } catch (error) {
             console.error(error);
-            io.to(userId).emit('new bot message', { error: true, message: UNAVAILABLE_ASSISTANT_MESSAGE, fontSize: '12px' });
-
+            io.to(userId).emit('new bot message', { error: true, message: 'Error al procesar la respuesta del asistente', fontSize: '12px' });
           }
         });
       });
-
+    
       req.on('error', (error) => {
         console.error(error);
-
-        io.to(userId).emit('new bot message', { error: true, message: UNAVAILABLE_ASSISTANT_MESSAGE, fontSize: '12px' });
+        io.to(userId).emit('new bot message', { error: true, message: 'Error en la solicitud al asistente', fontSize: '12px' });
+    
+        // Si la solicitud falla, puedes agregar un reintento aquí después de un cierto tiempo.
+        // Por ejemplo, puedes intentar nuevamente después de 5 segundos.
+        setTimeout(() => {
+          console.log('Reintentando solicitud al asistente...');
+          requestToAssistant(userId, data);
+        }, 5000); // Esperar 5 segundos antes de volver a intentar
       });
-
+    
       req.write(JSON.stringify({ message: data }));
       req.end();
     }
-
+    
     function clearMessages() {
       io.to(socket.id).emit('clear chat');
 
