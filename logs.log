@@ -573,3 +573,7 @@
 [2023-09-08T23:00:40.085Z] info: El usuario no existe o las credenciales son incorrectas.
 [2023-09-08T23:00:40.087Z] error: No se pudo establecer la conexión con la API: Las credenciales son incorrectas. Inténtelo de nuevo.
 [2023-09-08T23:00:46.713Z] info: El usuario existe.
+[2023-09-11T17:42:17.389Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-09-11T17:42:17.395Z] error: No se pudo establecer la conexión con la API: Las credenciales son incorrectas. Inténtelo de nuevo.
+[2023-09-12T04:43:43.059Z] info: El usuario existe.
+[2023-09-12T04:45:01.203Z] info: El usuario existe.
