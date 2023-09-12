@@ -30,6 +30,7 @@ const postRequest = promisify(https.request);
 
 
 module.exports = function (io) {
+  const https = require('https');
   io.on('connection', (socket) => {
     let isVerified = false;
     let userName = '';
@@ -168,6 +169,8 @@ module.exports = function (io) {
       resetCredentials(userId);
     }
 
+    const https = require('https');
+
     function requestToAssistant(userId, data) {
       if (!isVerified) {
         const errorMessage = 'No puede realizar peticiones. Por favor, ingrese sus credenciales';
@@ -179,13 +182,13 @@ module.exports = function (io) {
         return;
       }
     
-      const https = require('https');
       const options = {
         hostname: 'e38f-200-24-154-53.ngrok.io',
         port: 443,
         path: '/webhooks/rest/webhook',
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 30000, // Aumentar el tiempo de espera a 30 segundos
       };
     
       const req = https.request(options, async (res) => {
@@ -198,17 +201,26 @@ module.exports = function (io) {
         res.on('end', async () => {
           try {
             if (responseBody && responseBody.trim() !== '') {
-              const response = JSON.parse(responseBody);
-              const responseMessages = response.map((item) => item.text);
-              const joinedMessages = responseMessages.join('\n');
+              // Comprueba si la respuesta es un objeto JSON válido
+              if (isValidJSON(responseBody)) {
+                // Imprime la respuesta JSON en la consola
+                console.log('Respuesta del asistente (JSON):', responseBody);
     
-              io.to(userId).emit('new bot message', { messages: responseMessages, fontSize: '12px' });
-              const conversation = { userId: socket.id, message: joinedMessages, userMessage: data };
+                const response = JSON.parse(responseBody);
+                const responseMessages = response.map((item) => item.text);
+                const joinedMessages = responseMessages.join('\n');
     
-              await User.findOneAndUpdate(
-                { identification: identification },
-                { $push: { conversations: conversation } }
-              );
+                io.to(userId).emit('new bot message', { messages: responseMessages, fontSize: '12px' });
+                const conversation = { userId: socket.id, message: joinedMessages, userMessage: data };
+    
+                await User.findOneAndUpdate(
+                  { identification: identification },
+                  { $push: { conversations: conversation } }
+                );
+              } else {
+                console.error('La respuesta del servidor no es un JSON válido.');
+                io.to(userId).emit('new bot message', { error: true, message: 'Respuesta no válida del asistente', fontSize: '12px' });
+              }
             } else {
               console.error('La respuesta del servidor está vacía o no válida.');
               io.to(userId).emit('new bot message', { error: true, message: 'Respuesta vacía o no válida del asistente', fontSize: '12px' });
@@ -235,6 +247,18 @@ module.exports = function (io) {
       req.write(JSON.stringify({ message: data }));
       req.end();
     }
+    
+    // Función para verificar si una cadena es un JSON válido
+    function isValidJSON(str) {
+      try {
+        JSON.parse(str);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    
+    
     
     function clearMessages() {
       io.to(socket.id).emit('clear chat');
