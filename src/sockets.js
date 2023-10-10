@@ -34,6 +34,7 @@ module.exports = function (io) {
   io.on('connection', (socket) => {
     let isVerified = false;
     let userName = '';
+    let userId = ''; // Almacena el userId
 
     let identification = '';
     let password = '';
@@ -90,11 +91,6 @@ module.exports = function (io) {
         requestToAssistant(userId, data);
       }
 
-    }
-    function saveMessageToLocalStorage(message) {
-      const storedMessages = JSON.parse(localStorage.getItem('chatMessages')) || [];
-      storedMessages.push(message);
-      localStorage.setItem('chatMessages', JSON.stringify(storedMessages));
     }
     
     async function verifyCredentials(userId) {
@@ -183,7 +179,7 @@ module.exports = function (io) {
       }
     
       const options = {
-        hostname: 'e38f-200-24-154-53.ngrok.io',
+        hostname: '85d6-200-24-154-53.ngrok.io',
         port: 443,
         path: '/webhooks/rest/webhook',
         method: 'POST',
@@ -201,13 +197,21 @@ module.exports = function (io) {
         res.on('end', async () => {
           try {
             if (responseBody && responseBody.trim() !== '') {
-              // Comprueba si la respuesta es un objeto JSON válido
-              if (isValidJSON(responseBody)) {
-                // Imprime la respuesta JSON en la consola
-                console.log('Respuesta del asistente (JSON):', responseBody);
+              // Intentar analizar la respuesta como JSON
+              let responseObj;
+              try {
+                responseObj = JSON.parse(responseBody);
+              } catch (error) {
+                console.error('La respuesta del servidor no es un JSON válido.');
+                io.to(userId).emit('new bot message', { error: true, message: 'Vuelve a formular la pregunta por favor', fontSize: '12px' });
+                // Aquí puedes realizar un manejo especial para extraer información relevante del texto no válido
+                const extractedInfo = extractInfoFromNonJSON(responseBody);
+                io.to(userId).emit('new bot message', { info: extractedInfo, fontSize: '12px' });
+              }
     
-                const response = JSON.parse(responseBody);
-                const responseMessages = response.map((item) => item.text);
+              // Si responseObj está definido, significa que se pudo analizar como JSON
+              if (responseObj) {
+                const responseMessages = responseObj.map((item) => item.text);
                 const joinedMessages = responseMessages.join('\n');
     
                 io.to(userId).emit('new bot message', { messages: responseMessages, fontSize: '12px' });
@@ -217,9 +221,6 @@ module.exports = function (io) {
                   { identification: identification },
                   { $push: { conversations: conversation } }
                 );
-              } else {
-                console.error('La respuesta del servidor no es un JSON válido.');
-                io.to(userId).emit('new bot message', { error: true, message: 'Respuesta no válida del asistente', fontSize: '12px' });
               }
             } else {
               console.error('La respuesta del servidor está vacía o no válida.');
@@ -258,6 +259,15 @@ module.exports = function (io) {
       }
     }
     
+    // Función para extraer información relevante de texto no válido
+    function extractInfoFromNonJSON(text) {
+      // Aquí puedes implementar la lógica para extraer información relevante del texto no válido
+      // Por ejemplo, buscar palabras clave o patrones en el texto y devolverlos en un formato adecuado
+      // Esta función debe adaptarse a tus necesidades específicas.
+      // Ejemplo de implementación:
+      // return text.match(/palabraclave: (.+)/)[1];
+      return text; // Mostrar el texto no válido directamente
+    }
     
     
     function clearMessages() {

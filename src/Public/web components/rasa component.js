@@ -230,6 +230,32 @@ class ChatComponent extends HTMLElement {
       chatContainer.appendChild(messageContainer);
       messageContainer.scrollIntoView({ behavior: 'smooth' });
     });
+    let storedToken; // Declarar la variable en un ámbito más amplio
+
+    socket.on('authentication token', ({ token }) => {
+      // Aquí puedes manejar el token recibido del servidor
+      console.log('Token recibido del servidor:', token);
+    
+      // Almacena el token en el almacenamiento local
+      localStorage.setItem('authToken', token);
+    
+      // Asigna el token a la variable storedToken
+      storedToken = token;
+    });
+    
+    try {
+      // Obtén el token almacenado en el almacenamiento local
+      storedToken = localStorage.getItem('authToken');
+      
+      if (storedToken) {
+        // Envía el token almacenado al servidor para su verificación
+        socket.emit('authentication token', { token: storedToken });
+        console.log('Token almacenado:', storedToken);
+      }
+    } catch (error) {
+      console.error('Error al acceder al almacenamiento local:', error);
+    }
+    
   
   }
 }

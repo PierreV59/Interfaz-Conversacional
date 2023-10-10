@@ -659,3 +659,96 @@
 [2023-09-12T17:07:30.131Z] info: El usuario existe.
 [2023-09-12T17:10:54.513Z] info: El usuario existe.
 [2023-09-12T17:13:08.456Z] info: El usuario existe.
+[2023-09-12T17:18:50.685Z] info: El usuario existe.
+[2023-09-12T17:19:36.283Z] info: El usuario existe.
+[2023-09-12T17:22:01.066Z] info: El usuario existe.
+[2023-09-12T17:23:40.380Z] info: El usuario existe.
+[2023-09-12T17:26:17.202Z] info: El usuario existe.
+[2023-09-12T17:28:00.117Z] info: El usuario existe.
+[2023-09-12T17:32:44.956Z] info: El usuario existe.
+[2023-09-12T17:33:13.380Z] info: El usuario existe.
+[2023-09-12T17:36:58.189Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-09-12T17:37:03.287Z] info: El usuario existe.
+[2023-09-12T17:37:50.954Z] info: El usuario existe.
+[2023-09-12T17:41:28.508Z] info: El usuario existe.
+[2023-09-12T17:44:00.233Z] info: El usuario existe.
+[2023-09-12T17:47:15.393Z] info: El usuario existe.
+[2023-09-12T17:49:08.098Z] info: El usuario existe.
+[2023-09-12T17:51:00.038Z] info: El usuario existe.
+[2023-09-12T17:59:14.017Z] info: El usuario existe.
+[2023-09-12T18:05:43.870Z] info: El usuario existe.
+[2023-09-12T18:16:21.586Z] info: El usuario existe.
+[2023-10-09T12:04:23.902Z] info: El usuario existe.
+[2023-10-09T12:15:01.038Z] info: El usuario existe.
+[2023-10-09T12:42:15.658Z] info: El usuario existe.
+[2023-10-09T12:56:44.889Z] info: El usuario existe.
+[2023-10-09T13:16:13.510Z] info: El usuario existe.
+[2023-10-09T13:16:23.999Z] info: El usuario existe.
+[2023-10-09T13:16:32.599Z] info: El usuario existe.
+[2023-10-09T13:17:00.085Z] info: El usuario existe.
+[2023-10-09T13:18:06.921Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-10-09T13:18:06.922Z] error: No se pudo establecer la conexión con la API: Las credenciales son incorrectas. Inténtelo de nuevo.
+[2023-10-09T13:20:39.790Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-10-09T13:20:39.792Z] error: No se pudo establecer la conexión con la API: Las credenciales son incorrectas. Inténtelo de nuevo.
+[2023-10-09T13:22:20.316Z] info: El usuario existe.
+[2023-10-09T13:35:26.641Z] info: El usuario existe.
+[2023-10-09T13:35:53.953Z] info: El usuario existe.
+[2023-10-09T13:38:09.329Z] info: El usuario existe.
+[2023-10-09T13:38:20.672Z] info: El usuario existe.
+[2023-10-09T13:38:54.814Z] info: El usuario existe.
+[2023-10-09T13:39:24.946Z] info: El usuario existe.
+[2023-10-09T13:39:25.316Z] error: No se pudo establecer la conexión con la API: localStorage is not defined
+[2023-10-09T13:42:55.594Z] info: El usuario existe.
+[2023-10-09T13:42:55.998Z] error: No se pudo establecer la conexión con la API: localStorage is not defined
+[2023-10-09T13:43:58.637Z] info: El usuario existe.
+[2023-10-09T14:59:50.684Z] info: El usuario existe.
+[2023-10-09T15:13:22.419Z] info: El usuario existe.
+[2023-10-09T15:29:51.878Z] info: El usuario existe.
+[2023-10-09T15:35:44.598Z] info: El usuario existe.
+[2023-10-09T17:45:34.532Z] info: El usuario existe.
+[2023-10-09T17:45:34.893Z] error: No se pudo establecer la conexión con la API: greetingMessage is not defined
+[2023-10-09T17:46:14.030Z] info: El usuario existe.
+[2023-10-09T17:46:14.399Z] error: No se pudo establecer la conexión con la API: greetingMessage is not defined
+[2023-10-09T17:46:20.514Z] info: El usuario existe.
+[2023-10-09T17:46:20.867Z] error: No se pudo establecer la conexión con la API: greetingMessage is not defined
+[2023-10-09T17:51:08.405Z] info: El usuario existe.
+[2023-10-09T17:55:26.691Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-10-09T17:55:34.619Z] info: El usuario existe.
+[2023-10-09T17:59:24.253Z] info: El usuario existe.
+[2023-10-09T17:59:24.255Z] error: No se pudo establecer la conexión con la API: greetingMessage is not defined
+[2023-10-09T18:00:28.100Z] info: El usuario existe.
+[2023-10-09T18:02:10.884Z] info: El usuario existe.
+[2023-10-09T18:02:10.888Z] error: No se pudo establecer la conexión con la API: greetingMessage is not defined
+[2023-10-09T18:02:56.514Z] info: El usuario existe.
+[2023-10-09T18:02:56.517Z] error: No se pudo establecer la conexión con la API: greetingMessage is not defined
+[2023-10-09T18:05:45.544Z] info: El usuario existe.
+[2023-10-09T18:05:45.547Z] error: No se pudo establecer la conexión con la API: greetingMessage is not defined
+[2023-10-09T18:08:48.356Z] info: El usuario existe.
+[2023-10-09T18:08:48.360Z] error: No se pudo establecer la conexión con la API: greetingMessage is not defined
+[2023-10-09T18:09:18.254Z] info: El usuario existe.
+[2023-10-09T18:09:18.257Z] error: No se pudo establecer la conexión con la API: greetingMessage is not defined
+[2023-10-09T18:09:41.591Z] info: El usuario existe.
+[2023-10-09T18:09:41.594Z] error: No se pudo establecer la conexión con la API: greetingMessage is not defined
+[2023-10-09T18:09:48.484Z] info: El usuario existe.
+[2023-10-09T18:09:48.484Z] error: No se pudo establecer la conexión con la API: greetingMessage is not defined
+[2023-10-09T18:10:37.049Z] info: El usuario existe.
+[2023-10-09T18:10:37.052Z] error: No se pudo establecer la conexión con la API: greetingMessage is not defined
+[2023-10-09T18:10:44.343Z] info: El usuario existe.
+[2023-10-09T18:10:44.344Z] error: No se pudo establecer la conexión con la API: greetingMessage is not defined
+[2023-10-09T18:12:04.847Z] info: El usuario existe.
+[2023-10-09T18:12:57.373Z] info: El usuario existe.
+[2023-10-09T18:13:48.595Z] info: El usuario existe.
+[2023-10-09T18:15:50.828Z] info: El usuario existe.
+[2023-10-09T18:16:11.226Z] info: El usuario existe.
+[2023-10-09T18:18:03.456Z] info: El usuario existe.
+[2023-10-09T18:18:34.335Z] info: El usuario existe.
+[2023-10-09T18:20:53.741Z] info: El usuario existe.
+[2023-10-09T18:21:32.632Z] info: El usuario existe.
+[2023-10-09T18:23:14.326Z] info: El usuario existe.
+[2023-10-09T18:24:50.950Z] info: El usuario existe.
+[2023-10-09T18:29:25.110Z] info: El usuario existe.
+[2023-10-09T18:30:38.539Z] info: El usuario existe.
+[2023-10-09T18:32:06.277Z] info: El usuario existe.
+[2023-10-09T18:54:48.987Z] info: El usuario existe.
+[2023-10-09T18:59:58.719Z] info: El usuario existe.
+[2023-10-09T19:00:17.560Z] info: El usuario existe.
