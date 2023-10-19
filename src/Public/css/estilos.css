@@ -717,3 +717,26 @@ button.active svg {
   color: #ffffff;
   /* Añade más estilos si es necesario */
 }
+/*#con {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow-y: auto;
+
+}
+
+#modoTotal {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%; /* Establece el ancho al 100% para cubrir toda la pantalla 
+}
+
+#intro-container {
+  width: calc(100% + 50%); 
+}
+*/

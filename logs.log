@@ -752,3 +752,193 @@
 [2023-10-09T18:54:48.987Z] info: El usuario existe.
 [2023-10-09T18:59:58.719Z] info: El usuario existe.
 [2023-10-09T19:00:17.560Z] info: El usuario existe.
+[2023-10-10T11:48:18.042Z] info: El usuario existe.
+[2023-10-10T11:50:08.621Z] info: El usuario existe.
+[2023-10-10T11:53:42.341Z] info: El usuario existe.
+[2023-10-10T11:56:17.686Z] info: El usuario existe.
+[2023-10-10T11:57:07.717Z] info: El usuario existe.
+[2023-10-10T11:58:36.736Z] info: El usuario existe.
+[2023-10-10T12:00:41.875Z] info: El usuario existe.
+[2023-10-10T12:04:13.881Z] info: El usuario existe.
+[2023-10-10T12:07:49.172Z] info: El usuario existe.
+[2023-10-10T12:11:10.843Z] info: El usuario existe.
+[2023-10-10T12:17:23.457Z] info: El usuario existe.
+[2023-10-10T12:22:14.181Z] info: El usuario existe.
+[2023-10-10T12:24:08.819Z] info: El usuario existe.
+[2023-10-10T12:25:25.123Z] info: El usuario existe.
+[2023-10-10T12:26:29.504Z] info: El usuario existe.
+[2023-10-10T12:28:29.785Z] info: El usuario existe.
+[2023-10-10T12:37:08.069Z] info: El usuario existe.
+[2023-10-10T12:49:38.042Z] error: No se pudo establecer la conexión con la API: userTokenMap is not defined
+[2023-10-10T12:50:00.967Z] error: No se pudo establecer la conexión con la API: userTokenMap is not defined
+[2023-10-10T12:50:09.056Z] error: No se pudo establecer la conexión con la API: userTokenMap is not defined
+[2023-10-10T12:53:15.604Z] info: El usuario existe.
+[2023-10-10T12:55:33.263Z] error: No se pudo establecer la conexión con la API: axios is not defined
+[2023-10-10T12:55:40.694Z] error: No se pudo establecer la conexión con la API: axios is not defined
+[2023-10-10T12:57:22.196Z] info: El usuario existe.
+[2023-10-10T13:06:17.782Z] info: El usuario existe.
+[2023-10-10T13:07:31.897Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-10-10T13:07:31.898Z] error: No se pudo establecer la conexión con la API: Las credenciales son incorrectas. Inténtelo de nuevo.
+[2023-10-10T13:07:38.327Z] info: El usuario existe.
+[2023-10-10T13:08:03.552Z] info: El usuario existe.
+[2023-10-10T13:15:07.486Z] error: No se pudo establecer la conexión con la API: generateAuthToken is not defined
+[2023-10-10T13:15:14.058Z] error: No se pudo establecer la conexión con la API: generateAuthToken is not defined
+[2023-10-10T13:15:35.232Z] error: No se pudo establecer la conexión con la API: generateAuthToken is not defined
+[2023-10-10T13:17:16.245Z] error: No se pudo establecer la conexión con la API: generateAuthToken is not defined
+[2023-10-10T13:17:21.847Z] error: No se pudo establecer la conexión con la API: generateAuthToken is not defined
+[2023-10-10T13:18:10.651Z] info: El usuario existe.
+[2023-10-10T13:19:08.563Z] info: El usuario existe.
+[2023-10-10T13:21:51.773Z] info: El usuario existe.
+[2023-10-10T13:25:22.235Z] info: El usuario existe.
+[2023-10-10T13:25:56.262Z] info: El usuario existe.
+[2023-10-10T13:26:25.032Z] info: El usuario existe.
+[2023-10-10T18:45:47.446Z] info: El usuario existe.
+[2023-10-10T18:46:19.453Z] info: El usuario existe.
+[2023-10-10T18:49:41.907Z] info: El usuario existe.
+[2023-10-10T20:15:36.830Z] info: El usuario existe.
+[2023-10-10T20:17:07.959Z] info: El usuario existe.
+[2023-10-10T20:18:42.742Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-10-10T20:18:42.743Z] error: No se pudo establecer la conexión con la API: Las credenciales son incorrectas. Inténtelo de nuevo.
+[2023-10-10T20:18:49.511Z] info: El usuario existe.
+[2023-10-12T18:58:16.300Z] info: El usuario existe.
+[2023-10-12T18:59:43.902Z] info: El usuario existe.
+[2023-10-16T14:45:59.827Z] info: El usuario existe.
+[2023-10-16T14:47:55.600Z] info: El usuario existe.
+[2023-10-16T14:49:30.259Z] info: El usuario existe.
+[2023-10-16T14:54:13.659Z] info: El usuario existe.
+[2023-10-16T14:57:25.615Z] info: El usuario existe.
+[2023-10-16T15:01:08.446Z] info: El usuario existe.
+[2023-10-16T15:02:11.266Z] info: El usuario existe.
+[2023-10-16T15:07:57.904Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-10-16T15:07:57.912Z] error: No se pudo establecer la conexión con la API: Las credenciales son incorrectas. Inténtelo de nuevo.
+[2023-10-16T15:08:08.436Z] info: El usuario existe.
+[2023-10-16T15:11:19.100Z] info: El usuario existe.
+[2023-10-16T15:13:28.762Z] info: El usuario existe.
+[2023-10-16T15:17:36.559Z] info: El usuario existe.
+[2023-10-16T15:19:07.508Z] info: El usuario existe.
+[2023-10-16T15:31:09.907Z] info: El usuario existe.
+[2023-10-16T15:33:43.473Z] info: El usuario existe.
+[2023-10-16T15:39:16.554Z] info: El usuario existe.
+[2023-10-16T15:40:10.191Z] info: El usuario existe.
+[2023-10-16T15:49:20.147Z] info: El usuario existe.
+[2023-10-16T15:50:41.858Z] info: El usuario existe.
+[2023-10-16T15:52:14.027Z] info: El usuario existe.
+[2023-10-16T15:53:34.757Z] info: El usuario existe.
+[2023-10-16T15:54:51.876Z] info: El usuario existe.
+[2023-10-16T15:57:42.920Z] info: El usuario existe.
+[2023-10-16T15:59:18.842Z] info: El usuario existe.
+[2023-10-16T16:11:31.310Z] info: El usuario existe.
+[2023-10-16T16:12:47.248Z] info: El usuario existe.
+[2023-10-16T16:14:10.764Z] info: El usuario existe.
+[2023-10-16T16:16:23.523Z] info: El usuario existe.
+[2023-10-16T16:16:32.404Z] info: El usuario existe.
+[2023-10-16T16:18:08.199Z] info: El usuario existe.
+[2023-10-16T16:36:16.716Z] info: El usuario existe.
+[2023-10-16T16:43:51.368Z] info: El usuario existe.
+[2023-10-16T16:46:53.418Z] info: El usuario existe.
+[2023-10-16T16:50:51.547Z] info: El usuario existe.
+[2023-10-16T16:52:11.930Z] info: El usuario existe.
+[2023-10-16T16:52:27.514Z] info: El usuario existe.
+[2023-10-16T16:57:49.275Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-10-16T16:57:49.281Z] error: No se pudo establecer la conexión con la API: Las credenciales son incorrectas. Inténtelo de nuevo.
+[2023-10-16T16:57:56.193Z] info: El usuario existe.
+[2023-10-16T17:01:25.181Z] info: El usuario existe.
+[2023-10-16T17:02:08.819Z] info: El usuario existe.
+[2023-10-16T17:02:49.501Z] info: El usuario existe.
+[2023-10-16T17:02:55.868Z] info: El usuario existe.
+[2023-10-16T17:06:10.324Z] info: El usuario existe.
+[2023-10-16T17:06:21.549Z] info: El usuario existe.
+[2023-10-16T17:08:53.677Z] info: El usuario existe.
+[2023-10-16T17:09:04.100Z] info: El usuario existe.
+[2023-10-16T17:11:29.479Z] info: El usuario existe.
+[2023-10-16T17:13:51.214Z] info: El usuario existe.
+[2023-10-16T17:13:57.841Z] info: El usuario existe.
+[2023-10-16T17:26:51.943Z] info: El usuario existe.
+[2023-10-16T17:29:33.470Z] info: El usuario existe.
+[2023-10-16T17:31:49.772Z] info: El usuario existe.
+[2023-10-16T17:31:56.094Z] info: El usuario existe.
+[2023-10-16T17:35:12.435Z] info: El usuario existe.
+[2023-10-16T17:36:26.357Z] info: El usuario existe.
+[2023-10-16T17:37:39.458Z] info: El usuario existe.
+[2023-10-16T17:37:45.000Z] info: El usuario existe.
+[2023-10-16T17:38:29.512Z] info: El usuario existe.
+[2023-10-16T17:39:57.522Z] info: El usuario existe.
+[2023-10-16T17:40:13.685Z] info: El usuario existe.
+[2023-10-16T17:53:08.936Z] info: El usuario existe.
+[2023-10-16T21:23:34.836Z] info: El usuario existe.
+[2023-10-16T21:23:53.914Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-10-16T21:23:53.915Z] error: No se pudo establecer la conexión con la API: Las credenciales son incorrectas. Inténtelo de nuevo.
+[2023-10-16T21:24:08.055Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-10-16T21:24:08.057Z] error: No se pudo establecer la conexión con la API: Las credenciales son incorrectas. Inténtelo de nuevo.
+[2023-10-16T21:24:12.742Z] info: El usuario existe.
+[2023-10-16T21:28:14.051Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-10-16T21:28:14.055Z] error: No se pudo establecer la conexión con la API: Las credenciales son incorrectas. Inténtelo de nuevo.
+[2023-10-16T21:28:32.857Z] info: El usuario existe.
+[2023-10-16T21:28:49.162Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-10-16T21:28:49.164Z] error: No se pudo establecer la conexión con la API: Las credenciales son incorrectas. Inténtelo de nuevo.
+[2023-10-16T21:29:00.579Z] info: El usuario existe.
+[2023-10-16T21:31:15.253Z] info: El usuario existe.
+[2023-10-16T21:32:28.750Z] info: El usuario existe.
+[2023-10-16T21:32:36.259Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-10-16T21:32:36.260Z] error: No se pudo establecer la conexión con la API: Las credenciales son incorrectas. Inténtelo de nuevo.
+[2023-10-16T21:32:47.798Z] info: El usuario existe.
+[2023-10-16T21:38:26.887Z] info: El usuario existe.
+[2023-10-16T21:38:34.531Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-10-16T21:38:34.533Z] error: Error en la autenticación: Credenciales inválidas
+[2023-10-16T21:38:47.328Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-10-16T21:38:47.329Z] error: Error en la autenticación: Credenciales inválidas
+[2023-10-16T21:38:52.688Z] info: El usuario existe.
+[2023-10-16T21:39:46.664Z] info: El usuario existe.
+[2023-10-16T21:42:01.160Z] info: El usuario existe.
+[2023-10-16T21:42:13.208Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-10-16T21:42:13.209Z] error: Error en la autenticación: Credenciales inválidas
+[2023-10-16T21:42:30.654Z] info: El usuario existe.
+[2023-10-16T21:49:19.657Z] info: El usuario existe.
+[2023-10-16T21:49:28.978Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-10-16T21:49:28.979Z] error: Error en la autenticación: Credenciales inválidas
+[2023-10-16T21:49:40.826Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-10-16T21:49:40.827Z] error: Error en la autenticación: Credenciales inválidas
+[2023-10-16T21:49:46.643Z] info: El usuario existe.
+[2023-10-16T21:56:12.699Z] info: El usuario existe.
+[2023-10-16T21:56:19.614Z] info: El usuario existe.
+[2023-10-16T22:01:02.943Z] info: El usuario existe.
+[2023-10-16T22:01:21.254Z] info: El usuario existe.
+[2023-10-16T22:02:24.705Z] info: El usuario existe.
+[2023-10-16T22:02:40.700Z] info: El usuario existe.
+[2023-10-16T22:10:30.030Z] info: El usuario existe.
+[2023-10-16T22:10:40.080Z] info: El usuario existe.
+[2023-10-16T22:14:09.547Z] info: El usuario existe.
+[2023-10-16T22:15:44.208Z] info: El usuario existe.
+[2023-10-16T22:15:56.688Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-10-16T22:15:56.689Z] error: Error en la autenticación: Credenciales inválidas
+[2023-10-16T22:16:28.246Z] info: El usuario existe.
+[2023-10-16T22:16:42.221Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-10-16T22:16:42.222Z] error: Error en la autenticación: Credenciales inválidas
+[2023-10-16T22:16:52.081Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-10-16T22:16:52.083Z] error: Error en la autenticación: Credenciales inválidas
+[2023-10-16T22:16:57.961Z] info: El usuario existe.
+[2023-10-16T22:20:20.822Z] info: El usuario existe.
+[2023-10-16T22:20:26.322Z] info: El usuario existe.
+[2023-10-17T04:00:24.441Z] info: El usuario existe.
+[2023-10-17T04:02:29.785Z] info: El usuario existe.
+[2023-10-17T04:04:17.504Z] info: El usuario existe.
+[2023-10-17T04:05:30.849Z] info: El usuario existe.
+[2023-10-17T04:21:01.606Z] info: El usuario existe.
+[2023-10-17T04:24:39.691Z] info: El usuario existe.
+[2023-10-17T04:26:20.955Z] info: El usuario existe.
+[2023-10-17T04:29:18.739Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-10-17T04:29:18.746Z] error: Error en la autenticación: Credenciales inválidas
+[2023-10-17T04:29:26.650Z] info: El usuario existe.
+[2023-10-17T04:38:06.358Z] info: El usuario existe.
+[2023-10-17T15:45:32.892Z] info: El usuario existe.
+[2023-10-18T16:58:43.576Z] info: El usuario existe.
+[2023-10-18T16:59:10.309Z] info: El usuario existe.
+[2023-10-18T17:00:04.798Z] info: El usuario existe.
+[2023-10-18T17:01:34.114Z] info: El usuario existe.
+[2023-10-18T17:02:08.485Z] info: El usuario existe.
+[2023-10-18T17:05:04.737Z] info: El usuario existe.
+[2023-10-18T17:14:47.687Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-10-18T17:14:47.690Z] error: Error en la autenticación: Credenciales inválidas
+[2023-10-18T17:14:58.465Z] info: El usuario existe.
+[2023-10-18T17:25:02.021Z] info: El usuario existe.
+[2023-10-18T17:28:04.162Z] info: El usuario existe.

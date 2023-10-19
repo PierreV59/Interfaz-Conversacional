@@ -6,6 +6,8 @@ const { v4: uuidv4 } = require('uuid');
 const winston = require('winston');
 const { User } = require('./Models/Chat');
 
+const jwt = require('jsonwebtoken');
+
 const logger = winston.createLogger({
   level: 'info',
   format: winston.format.combine(
@@ -23,31 +25,62 @@ const WELCOME_MESSAGE = 'Por favor, ingrese su número de identificación';
 const IDENTIFICATION_MESSAGE = 'Ingrese su número de identificación';
 const INVALID_CREDENTIALS_MESSAGE = 'Las credenciales son incorrectas. Inténtelo de nuevo.';
 const CONNECTION_ERROR_MESSAGE = 'Error al establecer conexión con la API';
-const UNAVAILABLE_ASSISTANT_MESSAGE = 'El asistente no está disponible en este momento. Por favor, inténtalo más tarde.';
+const UNAVAILABLE_ASSISTANT_MESSAGE = 'La sesión aún está activa, puedes continuar haciendo solicitudes al Bot.';
 
 const postRequest = promisify(https.request);
 
 
-
 module.exports = function (io) {
+
   const https = require('https');
+  let bandera = false;
+
+  function showWelcomeMessage(socket) {
+    socket.emit('new user VALIDATION', { message: WELCOME_MESSAGE1 });
+    socket.emit('new user VALIDATION', { message: IDENTIFICATION_MESSAGE });
+    console.log(bandera);
+    bandera = true;
+  }
+
   io.on('connection', (socket) => {
     let isVerified = false;
     let userName = '';
-    let userId = ''; // Almacena el userId
-
     let identification = '';
     let password = '';
+    let authToken = null;
+    let identificationss;
 
-    socket.emit('new user VALIDATION', { message: WELCOME_MESSAGE1 });
-    socket.emit('new user VALIDATION', { message: IDENTIFICATION_MESSAGE });
+    if (!bandera) {
+      showWelcomeMessage(socket);
+    }
 
+
+    socket.on('authentication token', async ({ token, userId, identification }) => {
+      const userIds = socket.id;
+      authToken = token;
+      identificationss=identification;
+
+      if (token == null) {
+        showWelcomeMessage(socket);
+      } else {
+        handleExistingUserWithoutUserId(userIds, identification);
+      }
+      if (token === authToken) {
+        isVerified = true;
+        io.to(userIds).emit('new user VALIDATION', { message: UNAVAILABLE_ASSISTANT_MESSAGE });
+        io.to(userIds).emit('user verified');
+      } else {
+        const errorMessage = 'La sesión de autenticación ha expirado. Por favor, vuelva a iniciar sesión.';
+        io.to(userIds).emit('new bot message', { error: true, message: errorMessage });
+        resetCredentials(socket.id);
+      }
+
+    });
     socket.on('Send message', handleMessage);
-    socket.on('clear messages', clearMessages);
 
     async function handleMessage(data) {
       const userId = socket.id;
-    
+
       if (!isVerified) {
         if (!identification) {
           if (!validateIdentification(data)) {
@@ -55,7 +88,7 @@ module.exports = function (io) {
             io.to(userId).emit('new bot message', { error: true, message: errorMessage });
             return;
           }
-    
+
           identification = data;
           io.to(userId).emit('new user message', { message: data });
           io.to(userId).emit('new user VALIDATION', { message: 'Por favor, ingrese su contraseña' });
@@ -66,12 +99,12 @@ module.exports = function (io) {
             io.to(userId).emit('new bot message', { error: true, message: errorMessage });
             return;
           }
-    
+
           password = data;
           io.to(userId).emit('new user message', { message: data });
         }
       }
-    
+
       if (identification && password && !isVerified) {
         try {
           await verifyCredentials(userId);
@@ -82,28 +115,44 @@ module.exports = function (io) {
         if (!isVerified) {
           const errorMessage = 'No puede realizar peticiones. Por favor, ingrese sus credenciales';
           io.to(userId).emit('new bot message', { error: true, message: errorMessage });
-    
+
           resetCredentials(userId);
           return;
         }
-    
+
         io.to(userId).emit('new user message', { message: data });
         requestToAssistant(userId, data);
       }
-
     }
-    
+
+    async function handleExistingUserWithoutUserId(userId, identification) {
+      io.to(userId).emit('clear chat');
+      const dbUser = await User.findOne({ identification });
+      if (dbUser) {
+        const conversations = dbUser.conversations;
+
+        for (const conversation of conversations) {
+          const { userMessage, message } = conversation;
+          io.to(userId).emit('new user message', { message: userMessage, fontFamily: 'Poppins, sans-serif', fontSize: '14px', color: 'text-gray-100' });
+          io.to(userId).emit('new user r', { message, fontFamily: 'Poppins, sans-serif', fontSize: '14px', color: 'text-gray-100' });
+        }
+      } else {
+        console.log('El usuario no existe en la base de datos');
+      }
+    }
+
     async function verifyCredentials(userId) {
-      const url = 'http://servicios.espam.edu.ec/Datos/login';
-      const formData = new FormData();
-      formData.append('identificacion', identification);
-      formData.append('password', password);
-    
       try {
+        const url = 'http://servicios.espam.edu.ec/Datos/login';
+        const formData = new FormData();
+        formData.append('identificacion', identification);
+        formData.append('password', password);
+    
+        // Realiza la solicitud HTTP usando async/await
         const response = await axios.post(url, formData);
     
         if (response.status !== 200) {
-          throw new Error(CONNECTION_ERROR_MESSAGE);
+          throw new Error('Error en la conexión');
         }
     
         const userData = response.data.data;
@@ -111,28 +160,40 @@ module.exports = function (io) {
     
         if (!user) {
           logger.info('El usuario no existe o las credenciales son incorrectas.');
-          throw new Error(INVALID_CREDENTIALS_MESSAGE);
+          throw new Error('Credenciales inválidas');
         }
     
+        const authToken = jwt.sign({ userId }, 'tu_secreto_secreto', { expiresIn: '60s' });
+    
+        io.to(userId).emit('authentication token', { token: authToken, userId, identification });
+
+        setTimeout(() => {
+          io.emit('token expired');
+        }, 60000);        
+
         isVerified = true;
         io.to(userId).emit('user verified');
         const { Nombre1, Apellido1 } = user;
         userName = `${Nombre1} ${Apellido1}`;
         logger.info('El usuario existe.');
-    
+
         let dbUser = await User.findOne({ identification });
-    
         if (!dbUser) {
           await createUserInDatabase(userId);
         } else {
           await handleExistingUser(userId, dbUser);
         }
+        identificationss=identification;
       } catch (error) {
-        logger.error(`No se pudo establecer la conexión con la API: ${error.message}`);
-        throw new Error(CONNECTION_ERROR_MESSAGE);
+        logger.error(`Error en la autenticación: ${error.message}`);
+        throw new Error('Error de autenticación');
       }
     }
     
+    socket.on('clear messages', () => {
+      clearMessages(identificationss);
+    });
+
     async function createUserInDatabase(userId) {
       io.to(userId).emit('clear chat');
       const dbUser = new User({ identification });
@@ -140,14 +201,14 @@ module.exports = function (io) {
       const greetingMessage = `¡Hola, ${userName}! Se ha establecido la conexión correctamente. Ahora puedes realizar peticiones al asistente virtual`;
       io.to(userId).emit('new bot message', { error: true, message: greetingMessage });
     }
-    
+
+
     async function handleExistingUser(userId, dbUser) {
       io.to(userId).emit('clear chat');
       const Historial = `¡Hola, ${userName}! Este es su historial de conversación:`;
       io.to(userId).emit('new bot message', { error: true, message: Historial });
-    
       const conversations = dbUser.conversations;
-    
+
       for (const conversation of conversations) {
         const { userMessage, message } = conversation;
         io.to(userId).emit('new user message', { message: userMessage, fontFamily: 'Poppins, sans-serif', fontSize: '14px', color: 'text-gray-100' });
@@ -155,15 +216,16 @@ module.exports = function (io) {
       }
     }
 
+
     function handleVerificationError(userId, error) {
       if (error.message === INVALID_CREDENTIALS_MESSAGE) {
         io.to(userId).emit('new bot message', { error: true, message: INVALID_CREDENTIALS_MESSAGE });
       } else {
         io.to(userId).emit('new bot message', { error: true, message: INVALID_CREDENTIALS_MESSAGE });
       }
-
       resetCredentials(userId);
     }
+
 
     const https = require('https');
 
@@ -171,52 +233,48 @@ module.exports = function (io) {
       if (!isVerified) {
         const errorMessage = 'No puede realizar peticiones. Por favor, ingrese sus credenciales';
         io.to(userId).emit('new bot message', { error: true, message: errorMessage, fontSize: '12px' });
-    
+
         identification = '';
         password = '';
         io.to(userId).emit('new user VALIDATION', { message: WELCOME_MESSAGE });
         return;
       }
-    
+
       const options = {
-        hostname: '85d6-200-24-154-53.ngrok.io',
+        hostname: '53ce-200-24-154-53.ngrok.io',
         port: 443,
         path: '/webhooks/rest/webhook',
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        timeout: 30000, // Aumentar el tiempo de espera a 30 segundos
+        headers: { 'Content-Type': 'application/json' }
       };
-    
+
       const req = https.request(options, async (res) => {
         let responseBody = '';
-    
+
         res.on('data', (chunk) => {
           responseBody += chunk;
         });
-    
+
         res.on('end', async () => {
           try {
             if (responseBody && responseBody.trim() !== '') {
-              // Intentar analizar la respuesta como JSON
               let responseObj;
               try {
                 responseObj = JSON.parse(responseBody);
               } catch (error) {
                 console.error('La respuesta del servidor no es un JSON válido.');
                 io.to(userId).emit('new bot message', { error: true, message: 'Vuelve a formular la pregunta por favor', fontSize: '12px' });
-                // Aquí puedes realizar un manejo especial para extraer información relevante del texto no válido
                 const extractedInfo = extractInfoFromNonJSON(responseBody);
                 io.to(userId).emit('new bot message', { info: extractedInfo, fontSize: '12px' });
               }
-    
-              // Si responseObj está definido, significa que se pudo analizar como JSON
+
               if (responseObj) {
                 const responseMessages = responseObj.map((item) => item.text);
                 const joinedMessages = responseMessages.join('\n');
-    
+
                 io.to(userId).emit('new bot message', { messages: responseMessages, fontSize: '12px' });
                 const conversation = { userId: socket.id, message: joinedMessages, userMessage: data };
-    
+
                 await User.findOneAndUpdate(
                   { identification: identification },
                   { $push: { conversations: conversation } }
@@ -232,24 +290,22 @@ module.exports = function (io) {
           }
         });
       });
-    
+
       req.on('error', (error) => {
         console.error(error);
         io.to(userId).emit('new bot message', { error: true, message: 'Error en la solicitud al asistente', fontSize: '12px' });
-    
-        // Si la solicitud falla, puedes agregar un reintento aquí después de un cierto tiempo.
-        // Por ejemplo, puedes intentar nuevamente después de 5 segundos.
+
         setTimeout(() => {
           console.log('Reintentando solicitud al asistente...');
           requestToAssistant(userId, data);
-        }, 5000); // Esperar 5 segundos antes de volver a intentar
+        }, 2000);
       });
-    
+
       req.write(JSON.stringify({ message: data }));
       req.end();
     }
-    
-    // Función para verificar si una cadena es un JSON válido
+
+
     function isValidJSON(str) {
       try {
         JSON.parse(str);
@@ -258,21 +314,14 @@ module.exports = function (io) {
         return false;
       }
     }
-    
-    // Función para extraer información relevante de texto no válido
-    function extractInfoFromNonJSON(text) {
-      // Aquí puedes implementar la lógica para extraer información relevante del texto no válido
-      // Por ejemplo, buscar palabras clave o patrones en el texto y devolverlos en un formato adecuado
-      // Esta función debe adaptarse a tus necesidades específicas.
-      // Ejemplo de implementación:
-      // return text.match(/palabraclave: (.+)/)[1];
-      return text; // Mostrar el texto no válido directamente
-    }
-    
-    
-    function clearMessages() {
-      io.to(socket.id).emit('clear chat');
 
+
+    function extractInfoFromNonJSON(text) {
+      return text;
+    }
+
+    function clearMessages(identification) {
+      io.to(socket.id).emit('clear chat');
       User.findOne({ identification: identification })
         .then((user) => {
           if (!user) {
@@ -284,7 +333,6 @@ module.exports = function (io) {
           User.updateOne({ identification: identification }, { $set: { conversations: [] } })
             .then(() => {
               console.log(`Se han eliminado las conversaciones del usuario con identificación: ${deletedIdentification}.`);
-              
             })
             .catch((err) => {
               console.error('Error al eliminar las conversaciones del usuario:', err);
@@ -294,15 +342,21 @@ module.exports = function (io) {
           console.error('Error al buscar el usuario:', err);
         });
     }
+
+
     function resetCredentials(userId) {
       isVerified = false;
       identification = '';
       password = '';
       io.to(userId).emit('new user VALIDATION', { message: IDENTIFICATION_MESSAGE });
     }
+
+
     function validateIdentification(identification) {
       return identification.length > 5;
     }
+
+
     function validatePassword(password) {
       return password.length > 0;
     }

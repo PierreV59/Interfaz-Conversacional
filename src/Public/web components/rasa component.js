@@ -13,17 +13,14 @@ class ChatComponent extends HTMLElement {
       chatContainer.scrollTop = chatContainer.scrollHeight;
     });
 
-    // Agregar estilos para el modo oscuro
     const addDarkModeStyles = () => {
       chatContainer.classList.add('dark-mode');
     };
 
-    // Quitar estilos para el modo oscuro
     const removeDarkModeStyles = () => {
       chatContainer.classList.remove('dark-mode');
     };
 
-    // Escuchar el evento de cambio de modo oscuro
     $('#toggle-dark-mode').click(function() {
       $('body').toggleClass('dark-mode');
       if ($('body').hasClass('dark-mode')) {
@@ -39,8 +36,6 @@ class ChatComponent extends HTMLElement {
       }
     });
 
-
-    // Listen for new user messages and add them to the chat
     socket.on('new user message', function(data) {
       const now = new Date();
       const time = now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
@@ -137,7 +132,7 @@ class ChatComponent extends HTMLElement {
     
       chatContainer.appendChild(messageContainer);
       messageContainer.scrollIntoView({ behavior: 'smooth' });
-      console.log(data.message)
+
     });
     
     socket.on('new bot message', function(data) {
@@ -230,32 +225,44 @@ class ChatComponent extends HTMLElement {
       chatContainer.appendChild(messageContainer);
       messageContainer.scrollIntoView({ behavior: 'smooth' });
     });
-    let storedToken; // Declarar la variable en un ámbito más amplio
 
-    socket.on('authentication token', ({ token }) => {
-      // Aquí puedes manejar el token recibido del servidor
+    let storedToken;
+
+    socket.on('token expired', () => {
+      console.log('El token ha expirado en el servidor, eliminando del local storage.');
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('Identificacion');
+      localStorage.removeItem('userId');
+
+    });
+    
+    socket.on('authentication token', ({ token, userId, identification }) => {
       console.log('Token recibido del servidor:', token);
-    
-      // Almacena el token en el almacenamiento local
+      console.log('UserId recibido del servidor:', userId);
+      console.log('Identificacion recibido del servidor:', identification);
+
       localStorage.setItem('authToken', token);
-    
-      // Asigna el token a la variable storedToken
+      localStorage.setItem('userId', userId);
+      localStorage.setItem('Identificacion', identification);
       storedToken = token;
     });
     
+    
     try {
-      // Obtén el token almacenado en el almacenamiento local
       storedToken = localStorage.getItem('authToken');
       
       if (storedToken) {
-        // Envía el token almacenado al servidor para su verificación
-        socket.emit('authentication token', { token: storedToken });
+        const userId = localStorage.getItem('userId');
+        const identification = localStorage.getItem('Identificacion');
+        socket.emit('authentication token', { token: storedToken, userId: userId, identification: identification });
         console.log('Token almacenado:', storedToken);
+        console.log('User almacenado:', userId);
+        console.log('Identificacion almacenado:', identification);
+
       }
     } catch (error) {
       console.error('Error al acceder al almacenamiento local:', error);
     }
-    
   
   }
 }
