@@ -54,7 +54,6 @@ module.exports = function (io) {
       showWelcomeMessage(socket);
     }
 
-
     socket.on('authentication token', async ({ token, userId, identification }) => {
       const userIds = socket.id;
       authToken = token;
@@ -296,7 +295,6 @@ module.exports = function (io) {
         io.to(userId).emit('new bot message', { error: true, message: 'Error en la solicitud al asistente', fontSize: '12px' });
 
         setTimeout(() => {
-          console.log('Reintentando solicitud al asistente...');
           requestToAssistant(userId, data);
         }, 2000);
       });
