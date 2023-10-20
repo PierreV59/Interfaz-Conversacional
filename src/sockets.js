@@ -169,7 +169,7 @@ module.exports = function (io) {
 
         setTimeout(() => {
           io.emit('token expired');
-        }, 60000);        
+        }, 6000000);        
 
         isVerified = true;
         io.to(userId).emit('user verified');
