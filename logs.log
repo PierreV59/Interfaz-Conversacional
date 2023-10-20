@@ -942,3 +942,33 @@
 [2023-10-18T17:14:58.465Z] info: El usuario existe.
 [2023-10-18T17:25:02.021Z] info: El usuario existe.
 [2023-10-18T17:28:04.162Z] info: El usuario existe.
+[2023-10-19T03:37:40.821Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-10-19T03:37:40.827Z] error: Error en la autenticación: Credenciales inválidas
+[2023-10-19T03:38:02.345Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-10-19T03:38:02.346Z] error: Error en la autenticación: Credenciales inválidas
+[2023-10-19T03:38:46.809Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-10-19T03:38:46.817Z] error: Error en la autenticación: Credenciales inválidas
+[2023-10-19T04:13:41.847Z] info: El usuario existe.
+[2023-10-19T04:15:34.265Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-10-19T04:15:34.268Z] error: Error en la autenticación: Credenciales inválidas
+[2023-10-19T04:15:47.295Z] info: El usuario existe.
+[2023-10-19T04:19:41.044Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-10-19T04:19:41.047Z] error: Error en la autenticación: Credenciales inválidas
+[2023-10-19T04:19:54.349Z] info: El usuario existe.
+[2023-10-19T04:25:12.096Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-10-19T04:25:12.099Z] error: Error en la autenticación: Credenciales inválidas
+[2023-10-19T04:26:04.538Z] info: El usuario existe.
+[2023-10-19T04:27:35.903Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-10-19T04:27:35.903Z] error: Error en la autenticación: Credenciales inválidas
+[2023-10-19T04:27:43.709Z] info: El usuario existe.
+[2023-10-19T04:31:18.875Z] info: El usuario existe.
+[2023-10-19T04:32:28.657Z] info: El usuario existe.
+[2023-10-19T04:36:07.897Z] info: El usuario existe.
+[2023-10-19T14:23:05.190Z] info: El usuario existe.
+[2023-10-19T14:29:15.187Z] info: El usuario existe.
+[2023-10-19T14:36:40.881Z] info: El usuario existe.
+[2023-10-19T14:41:11.005Z] info: El usuario existe.
+[2023-10-19T14:42:57.193Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-10-19T14:42:57.195Z] error: Error en la autenticación: Credenciales inválidas
+[2023-10-19T14:43:03.829Z] info: El usuario existe.
+[2023-10-19T14:46:20.842Z] info: El usuario existe.
