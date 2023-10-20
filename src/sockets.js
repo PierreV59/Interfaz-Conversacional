@@ -168,7 +168,7 @@ module.exports = function (io) {
 
         setTimeout(() => {
           io.emit('token expired');
-        }, 6000000);        
+        }, 600000);        
 
         isVerified = true;
         io.to(userId).emit('user verified');
@@ -323,7 +323,7 @@ module.exports = function (io) {
       User.findOne({ identification: identification })
         .then((user) => {
           if (!user) {
-            console.log('No se encontró ningún usuario con la identificación proporcionada.');
+            console.log('No se encontró ningún usuario con la identificación.');
             return;
           }
           const deletedIdentification = user.identification;
