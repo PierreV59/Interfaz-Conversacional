@@ -34,13 +34,14 @@ module.exports = function (io) {
 
   const https = require('https');
   let bandera = false;
+  let bandera2 = false;
 
-  function showWelcomeMessage(socket) {
+  /*function showWelcomeMessage(socket) {
     socket.emit('new user VALIDATION', { message: WELCOME_MESSAGE1 });
     socket.emit('new user VALIDATION', { message: IDENTIFICATION_MESSAGE });
     console.log(bandera);
     bandera = true;
-  }
+  }*/
 
   io.on('connection', (socket) => {
     let isVerified = false;
@@ -51,7 +52,15 @@ module.exports = function (io) {
     let identificationss;
 
     if (!bandera) {
-      showWelcomeMessage(socket);
+      //showWelcomeMessage(socket);
+      socket.emit('new user VALIDATION', { message: WELCOME_MESSAGE1 });
+      socket.emit('new user VALIDATION', { message: IDENTIFICATION_MESSAGE });
+      bandera = true;
+    }
+    if(bandera2==true){
+      socket.emit('new user VALIDATION', { message: WELCOME_MESSAGE1 });
+      socket.emit('new user VALIDATION', { message: IDENTIFICATION_MESSAGE });
+      bandera2 = false;
     }
 
     socket.on('authentication token', async ({ token, userId, identification }) => {
@@ -60,7 +69,7 @@ module.exports = function (io) {
       identificationss=identification;
 
       if (token == null) {
-        showWelcomeMessage(socket);
+        //showWelcomeMessage(socket);
       } else {
         handleExistingUserWithoutUserId(userIds, identification);
       }
@@ -146,8 +155,7 @@ module.exports = function (io) {
         const formData = new FormData();
         formData.append('identificacion', identification);
         formData.append('password', password);
-    
-        // Realiza la solicitud HTTP usando async/await
+
         const response = await axios.post(url, formData);
     
         if (response.status !== 200) {
@@ -168,8 +176,9 @@ module.exports = function (io) {
 
         setTimeout(() => {
           io.emit('token expired');
-        }, 600000);        
-
+          bandera2= true;
+        }, 86400000);
+            
         isVerified = true;
         io.to(userId).emit('user verified');
         const { Nombre1, Apellido1 } = user;

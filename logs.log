@@ -972,3 +972,14 @@
 [2023-10-19T14:42:57.195Z] error: Error en la autenticación: Credenciales inválidas
 [2023-10-19T14:43:03.829Z] info: El usuario existe.
 [2023-10-19T14:46:20.842Z] info: El usuario existe.
+[2023-10-22T17:19:33.572Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-10-22T17:19:33.577Z] error: Error en la autenticación: Credenciales inválidas
+[2023-10-22T17:19:42.993Z] info: El usuario existe.
+[2023-10-22T17:21:12.820Z] info: El usuario existe.
+[2023-10-22T17:23:28.924Z] info: El usuario no existe o las credenciales son incorrectas.
+[2023-10-22T17:23:28.927Z] error: Error en la autenticación: Credenciales inválidas
+[2023-10-22T17:23:34.361Z] info: El usuario existe.
+[2023-10-22T17:24:06.606Z] info: El usuario existe.
+[2023-10-22T17:25:13.609Z] info: El usuario existe.
+[2023-10-22T17:25:56.420Z] info: El usuario existe.
+[2023-10-22T17:27:23.479Z] info: El usuario existe.
