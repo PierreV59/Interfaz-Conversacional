@@ -88,7 +88,6 @@ module.exports = function (io) {
 
     async function handleMessage(data) {
       const userId = socket.id;
-
       if (!isVerified) {
         if (!identification) {
           if (!validateIdentification(data)) {
@@ -129,7 +128,7 @@ module.exports = function (io) {
         }
 
         io.to(userId).emit('new user message', { message: data });
-        requestToAssistant(userId, data);
+        requestToAssistant(userId, identificationss, data);
       }
     }
 
@@ -236,33 +235,32 @@ module.exports = function (io) {
 
 
     const https = require('https');
-
-    function requestToAssistant(userId, data) {
+    function requestToAssistant(userId, identi, data) {
       if (!isVerified) {
         const errorMessage = 'No puede realizar peticiones. Por favor, ingrese sus credenciales';
         io.to(userId).emit('new bot message', { error: true, message: errorMessage, fontSize: '12px' });
-
+    
         identification = '';
         password = '';
         io.to(userId).emit('new user VALIDATION', { message: WELCOME_MESSAGE });
         return;
       }
-
+    
       const options = {
-        hostname: 'd77e-200-24-154-53.ngrok.io',
+        hostname: '606f-190-15-136-135.ngrok.io',
         port: 443,
         path: '/webhooks/rest/webhook',
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
       };
-
+    
       const req = https.request(options, async (res) => {
         let responseBody = '';
-
+    
         res.on('data', (chunk) => {
           responseBody += chunk;
         });
-
+    
         res.on('end', async () => {
           try {
             if (responseBody && responseBody.trim() !== '') {
@@ -275,16 +273,17 @@ module.exports = function (io) {
                 const extractedInfo = extractInfoFromNonJSON(responseBody);
                 io.to(userId).emit('new bot message', { info: extractedInfo, fontSize: '12px' });
               }
-
+    
               if (responseObj) {
                 const responseMessages = responseObj.map((item) => item.text);
                 const joinedMessages = responseMessages.join('\n');
-
+    
                 io.to(userId).emit('new bot message', { messages: responseMessages, fontSize: '12px' });
                 const conversation = { userId: socket.id, message: joinedMessages, userMessage: data };
-
+    
+                // Aquí se utiliza 'identi' en lugar de 'identification' para buscar y actualizar la conversación
                 await User.findOneAndUpdate(
-                  { identification: identification },
+                  { identification: identi },
                   { $push: { conversations: conversation } }
                 );
               }
@@ -298,19 +297,20 @@ module.exports = function (io) {
           }
         });
       });
-
+    
       req.on('error', (error) => {
         console.error(error);
         io.to(userId).emit('new bot message', { error: true, message: 'Error en la solicitud al asistente', fontSize: '12px' });
-
+    
         setTimeout(() => {
           requestToAssistant(userId, data);
         }, 2000);
       });
-
+    
       req.write(JSON.stringify({ message: data }));
       req.end();
     }
+    
 
 
     function isValidJSON(str) {
