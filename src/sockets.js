@@ -87,6 +87,7 @@ module.exports = function (io) {
     socket.on('Send message', handleMessage);
 
     async function handleMessage(data) {
+      console.log(identificationss)
       const userId = socket.id;
       if (!isVerified) {
         if (!identification) {
@@ -237,7 +238,7 @@ module.exports = function (io) {
     const https = require('https');
     function requestToAssistant(userId, identi, data) {
       if (!isVerified) {
-        const errorMessage = 'No puede realizar peticiones. Por favor, ingrese sus credenciales!';
+        const errorMessage = 'No puede realizar peticiones. Por favor, ingrese sus credenciales.';
         io.to(userId).emit('new bot message', { error: true, message: errorMessage, fontSize: '12px' });
     
         identification = '';
