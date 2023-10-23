@@ -237,7 +237,7 @@ module.exports = function (io) {
     const https = require('https');
     function requestToAssistant(userId, identi, data) {
       if (!isVerified) {
-        const errorMessage = 'No puede realizar peticiones. Por favor, ingrese sus credenciales';
+        const errorMessage = 'No puede realizar peticiones. Por favor, ingrese sus credenciales!';
         io.to(userId).emit('new bot message', { error: true, message: errorMessage, fontSize: '12px' });
     
         identification = '';
