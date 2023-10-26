@@ -248,7 +248,7 @@ module.exports = function (io) {
       }
     
       const options = {
-        hostname: '7c9f-190-15-136-135.ngrok.io',
+        hostname: 'nlubot.ngrok.app',
         port: 443,
         path: '/webhooks/rest/webhook',
         method: 'POST',
