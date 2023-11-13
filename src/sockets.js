@@ -35,6 +35,7 @@ module.exports = function (io) {
   const https = require('https');
   let bandera = false;
   let bandera2 = false;
+  let contadorBienvenida = 0;
 
   /*function showWelcomeMessage(socket) {
     socket.emit('new user VALIDATION', { message: WELCOME_MESSAGE1 });
@@ -42,7 +43,6 @@ module.exports = function (io) {
     console.log(bandera);
     bandera = true;
   }*/
-
   io.on('connection', (socket) => {
     let isVerified = false;
     let userName = '';
@@ -51,32 +51,23 @@ module.exports = function (io) {
     let authToken = null;
     let identificationss;
 
-    if (!bandera) {
-      //showWelcomeMessage(socket);
-      socket.emit('new user VALIDATION', { message: WELCOME_MESSAGE1 });
-      socket.emit('new user VALIDATION', { message: IDENTIFICATION_MESSAGE });
-      bandera = true;
-    }
-    if(bandera2==true){
-      socket.emit('new user VALIDATION', { message: WELCOME_MESSAGE1 });
-      socket.emit('new user VALIDATION', { message: IDENTIFICATION_MESSAGE });
-      bandera2 = false;
-    }
-
     socket.on('authentication token', async ({ token, userId, identification }) => {
       const userIds = socket.id;
       authToken = token;
       identificationss=identification;
 
       if (token == null) {
-        //showWelcomeMessage(socket);
+        // Mostrar la bienvenida solo si no hay un token
+
       } else {
+        // Si hay un token, el usuario ya ha iniciado sesión
         handleExistingUserWithoutUserId(userIds, identification);
       }
       if (token === authToken) {
         isVerified = true;
         io.to(userIds).emit('new user VALIDATION', { message: UNAVAILABLE_ASSISTANT_MESSAGE });
         io.to(userIds).emit('user verified');
+        
       } else {
         const errorMessage = 'La sesión de autenticación ha expirado. Por favor, vuelva a iniciar sesión.';
         io.to(userIds).emit('new bot message', { error: true, message: errorMessage });
@@ -84,6 +75,13 @@ module.exports = function (io) {
       }
 
     });
+
+    if (!bandera) {
+      socket.emit('new user VALIDATION', { message: WELCOME_MESSAGE1 });
+      socket.emit('new user VALIDATION', { message: IDENTIFICATION_MESSAGE });
+      bandera = true;
+    }
+
     socket.on('Send message', handleMessage);
 
     async function handleMessage(data) {
@@ -169,7 +167,6 @@ module.exports = function (io) {
           logger.info('El usuario no existe o las credenciales son incorrectas.');
           throw new Error('Credenciales inválidas');
         }
-    
         const authToken = jwt.sign({ userId }, 'tu_secreto_secreto', { expiresIn: '60s' });
     
         io.to(userId).emit('authentication token', { token: authToken, userId, identification });
